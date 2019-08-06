@@ -106,8 +106,8 @@ collision1,40,50,102,84,Point
 surface0
 //surface0 is the basic default pose for your main character. I'll include a few examples of things you can do in this pose, but you won't have to use any of them if you don't want to. They're mostly for (my) reference and advanced users for the most part.
 {
-collision0,57,22,112,46,Head
-collision1,65,50,105,91,Face
+collision0,260,75,340,125,Head
+collision1,333,125,370,175,Face
 
 //Collisions define "hot spots" on your ghost where the user can pet or double click them (as defined in mouse.dic). You can see that there are two collisions here, collision0 and collision1. You can add more by copypasting and raising the number, like collision2, collision3, collision4, and so on.
 //The four numbers after that are x/y coordinates. Specifically, the first two numbers are the x/y coordinates of the TOP LEFT corner of your hotspot. The third and fourth numbers are the coordinates of the BOTTOM RIGHT corner of the hotspot. Essentially, this is outlining a rectangle.
@@ -205,7 +205,7 @@ element0,overlay,surface0.png,0,0
 //Note that at the end the image file number it calls is -1. -1 returns to the base default pose, so you'll want to end most unique or new animations with this to bring your ghost back to normal.
 
 //--Other Animation Options
-//There are a few other options you can have for interval animations. We've already seen bind, talk, random, and never so far. Some other ones are always, sometimes, runonce, and rarely. Their names are fairly self-explanatory I'd imagine, but I'll do some really quick examples from my other surfaces.txt files here.
+//There are a few other options you can have for interval animations. We've already seen bind, talk, random, and never so far. Some other ones are always, sometimes, run once, and rarely. Their names are fairly self-explanatory I'd imagine, but I'll do some really quick examples from my other surfaces.txt files here.
 
 //20interval,always
 //20pattern0,182,0,overlay,0,0

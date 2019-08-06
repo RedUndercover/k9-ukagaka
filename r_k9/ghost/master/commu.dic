@@ -1,0 +1,36 @@
+//---------------------------Communication--------------------------
+
+//I'm going to level with you, I don't really get a lot of what's going on in this .dic file. I'm pretty sure it's related to having ghosts talk to each other, or acknowledge each other's presence in some way, but I don't really know. If someone else knows more about this than I do, I'd love to hear about it, but for now, leave it all alone except for a few lines near the bottom.
+
+
+OnCommunicate
+ {
+	if reference0 == "user" || reference0 == "User"
+ 	{
+		//---- 사용자로부터의 이야기에 대답
+ 		ReplyToUser
+	}
+ 	else
+	{
+ 		//---- 유령로부터의 이야기에 대답
+		ReplyToGhost
+ 	}
+}
+
+ReplyToUser
+{
+	TalkToUser
+}
+
+
+//Again, I just have to guess at what's going on here since I've never really seen this in action. I think what's going on here is that there is a limited functionality for having ghosts communicate with each other, but I don't really know how you'd set it up or even see it happen. I believe ReplyToGhost would be in response to something the other ghost is saying, but I'm not sure. I wouldn't really mess very much with this - you may even just want to blank out the dialogue entirely. I've never personally seen it come up. I may experiment with this later and see if I can figure out more about it, but for now I wouldn't worry too much.
+
+ReplyToGhost
+{
+ 	res_reference0 = reference0
+	{
+	"\0\s[0]You said %(res_reference0).\w8\1\s[10]Odd thing to say.\e"
+	
+	"\1\s[10]Hey, %(res_reference0).\e"
+	}
+}

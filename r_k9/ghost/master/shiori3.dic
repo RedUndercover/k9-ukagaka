@@ -1,0 +1,1200 @@
+﻿//---------------------------Shiori3--------------------------
+//I am only leaving this brief note in here to say DO NOT TOUCH ANYTHING IN THIS FILE AT ALL. LEAVE IT ALONE. You shouldn't need to change ANYthing in here. Move on to another .dic file.
+
+
+/*---------------------------------------------------------------------------------------
+ *  SHIORI/3.0맕뚥긚긏깏긵긣 for AYA5
+ *  
+ *  written by umeici.
+ *  :::et cetera.
+ *  http://members.jcom.home.ne.jp/umeici/
+ *
+ *  뿗쀰
+ *  ver. date     note
+ *  0.0  20040312 first write
+ *  0.1  20040320 bugfix
+ *  0.2  20040328 bugfix (뒾롍 C.Ponapalt뾩)
+ *  0.3  20040404 bugfix
+ *  0.4  20040408 systemup똭긘긚긡?빾릶뤵뙽둮뮗
+ *  0.5  20040709 bugfix
+ *  0.6  20040717 REQUEST_LINES_LIMIT믁돿갂깏긏긄긚긣됶먏뛼뫊돸 (by C.Ponapalt럞)
+ *  0.7  20050116 OnGhostLoad/OnGhostUnload믁돿갂뫜롟뒻궻뢇맫
+ *  0.8  20050129 bugfix
+ * --------------------------------------------------------------------------------------
+*/
+
+/*---------------------------------------------------------------------------------------
+ *  룊딖먠믦뭠
+ * --------------------------------------------------------------------------------------
+*/
+#define	TALK_INTERVAL	180							/* AI긣?긏듩둼궻룊딖뭠[뷳] */
+
+#define	IGLIST_ACCEL	0							/* 1궸궥귡궴SSP/CROW렄궸궼NOTIFY installedghostname궳     */
+													/* 귽깛긚긣?깑띙긕?긚긣깏긚긣귩?뭱궥귡귝궎궸궶귟귏궥갃 */
+													/* sakura/kero뼹깏긚긣궼띿맟궠귢귏궧귪궕뛼뫊궳궥갃        */
+
+#define	IGLIST_MAX		0							/* 긲?귽깑몪뜽궸궲긕?긚긣깏긚긣귩?뭱궥귡띧갂롦벦궥귡   */
+													/* 릶궻뤵뙽귩럚믦궢귏궥갃-1궳맕뙽궶궢걁궥귊궲롦벦걂궳궥갃 */
+													/* 0궴궥귡궴롦벦궢귏궧귪갃                                */
+
+#define REQUEST_LINES_LIMIT		32					/* 깏긏긄긚긣빒럻쀱귩됶먏궥귡띍묈뛱릶궳궥갃               */
+													/* 뙵귞궥궴딳벍뱳궕뛼뫊궸궶귟귏궥궕갂뒶멣궸귽깛긚긣?깑   */
+													/* 띙궻긕?긚긣깏긚긣귩롦귢궶궘궶궯궫귟궢귏궥갃           */
+													/* 0궳궥귊궲궻뛱귩롦벦궢귏궥갃                            */
+
+/*---------------------------------------------------------------------------------------
+ *  댥돷궻define궼딈?밒궸쁌귞궶궋궳돷궠궋
+ * --------------------------------------------------------------------------------------
+*/
+
+// aya5.dll먠믦
+#globaldefine	AYAINFO_VERSION	0
+#globaldefine	AYAINFO_CHARSET	1
+#globaldefine	AYAINFO_PATH	2
+
+// 빒럻/빒럻쀱믦릶
+#define	C_CRLF2		C_CRLF+C_CRLF					/* 둂뛱긓?긤x2   */
+#define	C_CRLF		CHR(0xd)+CHR(0xa)				/* 둂뛱긓?긤     */
+#define	C_DQ		CHR(0x22)						/* ?긳깑긏긅?긣 */
+#define	C_PERS		CHR(0x25)						/* '%'            */
+#define	C_BYTE1		CHR(0x1)						/* 긫귽긣뭠1      */
+
+#define	RES_REF_MAX	32								/* res_reference궻뤵뙽 */
+
+// ?긃귽깛
+#globaldefine	{{CHAIN		{ switch CHAIN.Index {
+#globaldefine	}}CHAIN		} CHAIN.Index++ }
+
+#define			CHAIN_DELIM	":chain="
+
+// 땶뚚듂맜뺎렃궻궫귕궻긘긚긡?듫릶뺚뒶걁벶귒뫶궑궻귒궳뫮돒됀?궶귖궻걂
+#globaldefine	SETSEPARATOR	SETDELIM
+#globaldefine	TONUMBER2		TOINT
+#globaldefine	TOSTRING2		TOSTR
+#globaldefine	TONUMBER		CVINT
+#globaldefine	TOSTRING		CVSTR
+#globaldefine	ISFUNCTION		ISFUNC
+#globaldefine	BINSTRTONUM		BINSTRTOI
+#globaldefine	HEXSTRTONUM		HEXSTRTOI
+#globaldefine	ERASEVARIABLE	ERASEVAR
+#globaldefine	MSTRLEN			STRLEN
+#globaldefine	MSTRSTR			STRSTR
+#globaldefine	MSUBSTR			SUBSTR
+#globaldefine	MERASE			ERASE
+#globaldefine	MINSERT			INSERT
+#globaldefine	NAMETOVALUE		EVAL
+#globaldefine	CALLBYNAME		EVAL
+
+/****************************************************************************************
+ *  load
+ ****************************************************************************************
+*/
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌load
+ *  ???갌깓?긤렄궻룉뿚
+ * --------------------------------------------------------------------------------------
+*/
+load
+{
+	REQ.COMMAND   = "LOAD"
+	REQ.PROTOCOL  = "AYA/5.0"
+	var.req.key   = (IARRAY, "Path")
+	var.req.value = (IARRAY, _argv[0])
+
+	OnLoad
+
+	OnGhostLoad
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌OnLoad
+ *  ???갌깓?긤렄궻룉뿚(2)
+ * --------------------------------------------------------------------------------------
+*/
+OnLoad
+{
+
+	 if FSIZE ( 'yaya_variable.cfg' ) <= 0 { RESTOREVAR ( 'aya5_variable.cfg' ) SAVEVAR ( 'yaya_variable.cfg' ) FDEL ( 'aya5_variable.cfg' ) } 
+
+	// 룊됷딳벍렄궻룊딖돸
+	if SHIORI3FW.Status != "Run" {
+		SHIORI3FW.Status = "Run"
+		aitalkinterval   = TALK_INTERVAL
+	}
+
+	// 뻽됷딳벍렄궻룊딖돸
+	SHIORI3FW.Aitalkcount = 0
+    SHIORI3FW.Svvercount  = 0
+	SAORI.DllList         = IARRAY
+//	selfname              = C_PERS + "selfname"
+//	selfname2             = C_PERS + "selfname2"
+//	keroname              = C_PERS + "keroname"
+	basewarename          = ""
+
+	S_CHARSET = SHIORI3FW.GetChartsetName
+
+	SHIORI3FW.InitChain
+
+	restore_old_variables
+	
+	mode = "0"
+	scope = "0"
+	rest = "0"
+	headpatcount = 0
+	headpatflag = 0
+	headpattime = 0
+	bustpatcount = 0
+	bustpatflag = 0
+	bustpattime = 0
+	bustclickcount = 0
+	bustclickflag = 0
+	bustclicktime = 0
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.GetChartsetName
+ *  ???갌벍띿뭷궻빒럻긓?긤뼹빒럻쀱귩뺅궢귏궥
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.GetChartsetName
+{
+	case GETSETTING(AYAINFO_CHARSET) {
+	when 0
+		"Shift_JIS"
+	when 1
+		"UTF-8"
+	when 127
+		"default"
+	others
+		"unknown"
+	}
+}
+
+/****************************************************************************************
+ *  unload
+ ****************************************************************************************
+*/
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌unload
+ *  ???갌뢎뿹룉뿚
+ * --------------------------------------------------------------------------------------
+*/
+unload
+{
+	REQ.COMMAND   = "UNLOAD"
+	REQ.PROTOCOL  = "AYA/5.0"
+	var.req.key   = IARRAY
+	var.req.value = IARRAY
+
+	OnGhostUnload
+
+	OnUnload
+
+	// 뺎뫔궥귡뷠뾴궻궶궋빾릶귩랁룣
+	ERASEVAR("REQ.COMMAND"  )
+	ERASEVAR("REQ.PROTOCOL" )
+	ERASEVAR("var.req.key"  )
+	ERASEVAR("var.req.value")
+
+	ERASEVAR("LIB.PROTOCOL"  )
+	ERASEVAR("LIB.STATUSCODE")
+	ERASEVAR("var.lib.key"   )
+	ERASEVAR("var.lib.value" )
+
+	ERASEVAR("SHIORI3FW.Eventid"    )
+	ERASEVAR("SHIORI3FW.Aitalkcount")
+    ERASEVAR("SHIORI3FW.Svvercount" )
+	ERASEVAR("SAORI.DllList")
+
+	ERASEVAR("selfname" )
+	ERASEVAR("selfname2")
+	ERASEVAR("keroname" )
+	ERASEVAR("basewarename")
+	ERASEVAR("S_CHARSET")
+
+	ERASEVAR("installedghostlist" )
+	ERASEVAR("installedsakuralist")
+	ERASEVAR("installedkerolist"  )
+
+	ERASEVAR("ascii")
+	ERASEVAR("displaybpp")
+	ERASEVAR("displaywidth")
+	ERASEVAR("displayheight")
+	ERASEVAR("uniqueid")
+
+	ERASEVAR("talkmemo")
+	ERASEVAR("headpatflag")
+	ERASEVAR("headpatcount")
+	ERASEVAR("headpattime")
+	ERASEVAR("bustpatflag")
+	ERASEVAR("bustpatcount")
+	ERASEVAR("bustpattime")
+	ERASEVAR("bustclickflag")
+	ERASEVAR("bustclickcount")
+	ERASEVAR("bustclicktime")
+
+	ERASEVAR("minimizestarttime")
+	ERASEVAR("minimizetime")
+
+	SHIORI3FW.ClearChainVariable
+	SHIORI3FW.ClearReferenceVariable
+	SHIORI3FW.ClearValueexVariable
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌OnUnload
+ *  ???갌뢎뿹룉뿚(2)
+ * --------------------------------------------------------------------------------------
+*/
+OnUnload
+{
+}
+
+/****************************************************************************************
+ *  request
+ ****************************************************************************************
+*/
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌request
+ *  ???갌롷궚롦궯궫빒럻쀱귩SHIORI깏긏긄긚긣긶긞?궴궢궲됶먏궢궫뚣갂OnRequest귩뒋맜돸궢귏궥
+ * --------------------------------------------------------------------------------------
+*/
+request
+{
+	_reqdata = _argv[0]
+	_linestart = 0
+	_lineend = STRSTR(_reqdata, C_CRLF, _linestart)
+	
+	if _lineend <= 0 {
+		//1뛱뽞궥귞궶궋갏
+		"SHIORI/3.0 400 Bad Request%(C_CRLF)Chartset: %(S_CHARSET)%(C_CRLF2)"
+		return
+	}
+	_lin = SUBSTR(_reqdata,_linestart,(_lineend - _linestart))
+
+	// 깏긏긄긚긣롰빶궴긵깓긣긓깑뼹궻롦벦?긄깋?궶귞400
+	REQ.COMMAND  = _lin[0," SHIORI"]
+	REQ.PROTOCOL = "SHIORI" + _lin[1," SHIORI"]
+
+	// 깏긏긄긚긣긶긞?궻롦벦
+	var.req.key   = IARRAY
+	var.req.value = IARRAY
+	
+	_linenum = 0
+	_idparsed = 0
+	
+	while _lineend > _linestart {
+		//뛱빁뒆
+		_linestart = _lineend + 2
+		_lineend = STRSTR(_reqdata, C_CRLF, _linestart)
+		
+		//뗴뛱귖궢궘궼귒궰궔귞궶궔궯궫
+		if _lineend <= _linestart {
+			break
+		}
+		
+		_linenum += 1
+		if REQUEST_LINES_LIMIT {
+			if _linenum > REQUEST_LINES_LIMIT {
+				if _idparsed {
+					break
+				}
+			}
+		}
+		
+		_lin = SUBSTR(_reqdata,_linestart,(_lineend - _linestart))
+				
+		// 긌?궴뭠귩롦벦
+		_len = STRLEN(_lin)
+		_pos = STRSTR(_lin,": ",0)
+		var.req.key ,= (_key = SUBSTR(_lin,0,_pos))
+		_value       = SUBSTR(_lin,(_pos + 2),(_len - _pos - 2))
+
+		// 귽긹깛긣ID뼹뤝귩롦벦
+		if _key == "ID" {
+			// 롦벦?뼹멟먩벆궕"On"궳궶궋궶귞븊돿
+			SHIORI3FW.Eventid = _value
+			if SUBSTR(SHIORI3FW.Eventid, 0, 2) != "On"
+				SHIORI3FW.Eventid = "On_" + SHIORI3FW.Eventid
+			// 긪깛긤깋궕뼰궋뤾뜃궼뫂뺅귡
+			if !ISFUNC(SHIORI3FW.Eventid) {
+				SHIORI3FW.MakeEmptyResponse(SHIORI3FW.Eventid)
+				return
+			}
+			_idparsed = 1
+		}
+		// 긜긌깄깏긡귻깒긹깑="External"궶귞뫂뺅귡
+		elseif _key == "SecurityLevel" {
+			if _value == "External" {
+				"SHIORI/3.0 204 No Content%(C_CRLF)Chartset: %(S_CHARSET)%(C_CRLF2)"
+				return
+			}
+		}
+		// 긹?긚긂긃귺뼹롦벦
+		elseif _key == "Sender"
+			basewarename = _value
+
+		// 긌?궴뭠귩딯돬
+		if ISINTSTR(_value)
+			var.req.value ,= TOINT(_value)
+		elseif ISREALSTR(_value)
+			var.req.value ,= TOREAL(_value)
+		else
+			var.req.value ,= REPLACE(_value, C_BYTE1, ",")	// 긫귽긣뭠1궼긇깛?돸궢궲궢귏궎
+	}
+
+	OnRequest
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌OnRequest
+ *  ???갌롷궚롦궯궫깏긏긄긚긣궸돒궣궫룉뿚귩뛱궋귏궥
+ * --------------------------------------------------------------------------------------
+*/
+OnRequest
+{
+	// 긓?깛긤빶궸룉뿚빁딌
+	case REQ.COMMAND {
+	when "NOTIFY" {
+		// NOTIFY깏긏긄긚긣
+		_result = SHIORI3FW.RaiseIDEvent(SHIORI3FW.Eventid)
+		"SHIORI/3.0 200 OK%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF2)"
+	}
+
+	when "GET" {
+		// GET깏긏긄긚긣
+		if (_result = SHIORI3FW.RaiseIDEvent(SHIORI3FW.Eventid)) == ""
+			SHIORI3FW.MakeEmptyResponse(SHIORI3FW.Eventid)
+		else {
+			"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
+				Value: %(_result)%(C_CRLF)"
+			--
+			SHIORI3FW.AssembleReferenceHeader
+			--
+			C_CRLF
+		}
+	}
+
+	others
+		// 뼟뭢궻깏긏긄긚긣
+		"SHIORI/3.0 400 Bad Request%(C_CRLF2)"
+	}
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.AssembleReferenceHeader
+ *  ???갌res_reference*빾릶귩룈렅뙚뜽궢궲뺅몭뾭궻Reference빒럻쀱귩띿맟궢귏궥
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.AssembleReferenceHeader
+{
+	_result = ""
+	_before = ""
+	for _i = 0; _i < RES_REF_MAX; _i++, _before = _value {
+		_varname = "res_reference" + _i
+		_value = EVAL(_varname)
+		if _value != "" {
+			_result += "Reference%(_i): %(_value)%(C_CRLF)"
+			ERASEVAR(_varname);
+		}
+		else {
+			if _before == ""; break
+		}
+	}
+
+	_result
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.RaiseIDEvent
+ *  ???갌럚믦궠귢궫뼹멟궻듫릶귩렳뛱궢궲뙅됈귩롦벦궢귏궥
+ *  덙릶?갌_argv[0] 귽긹깛긣뼹
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.RaiseIDEvent
+{
+	// reference 빾릶귩띿맟
+	SHIORI3FW.MakeReferenceVariable
+
+	case _argv[0] {
+	when "OnSecondChange"
+		// OnSecondChange궶귞깋깛??긣?긏듫쁀룉뿚
+		SHIORI3FW.ControlAiTalk(&_argv[0])
+	when "OnUpdateReady"
+		// OnUpdateReady궶귞깓?긤뭷궻SAORI귩궥귊궲unload궥귡
+		SHIORI3FW.SaoriUnloadAll
+	when "OnUpdateComplete"
+		// OnUpdateComplete궶귞dl2귩뭈궥갃뫔띪궢궫귞벏뼹궻dll귩랁룣갂dl2궼dll궸깏긨??궥귡
+		// 귖궯궴귖AYA렔릆궕뫮뤭궬궯궫뤾뜃궼궵궎궢귝궎귖궶궋궕갃
+		SHIORI3FW.Dl2ToDll
+	}
+
+	// 귽긹깛긣뒋맜돸
+	if (_result = EVAL(_argv[0])) != "" {
+
+		// ?긃귽깛룉뿚
+		SHIORI3FW.StartChainTalk(_result[1, CHAIN_DELIM])
+
+		// 뢯쀍
+		_result[0, CHAIN_DELIM]
+	}
+
+	// reference 빾릶귩긏깏귺
+	SHIORI3FW.ClearReferenceVariable
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.MakeEmptyResponse
+ *  ???갌"204귩뺅궢궲궼궋궚궶궋깏긏긄긚긣"귩뵽믦궢궲갂밙맫궶돒뱴빒럻쀱귩띿맟궢귏궥
+ *  덙릶?갌_argv[0] 귽긹깛긣뼹
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.MakeEmptyResponse
+{
+	case _argv[0] {
+	when "OnFirstBoot", "OnBoot", "OnWindowStateRestore", "OnGhostChanged"
+		// 긚긓?긵0/1궻딈?긖?긲귻긚귩뢯궥뷠뾴궕궇귡귽긹깛긣
+		"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
+			Value: \0\s[0]\1\s[10]\e%(C_CRLF2)"
+	when "OnClose"
+		// 뢎뿹럚렑귩뢯궥뷠뾴궕궇귡귽긹깛긣
+		"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
+			Value: \0\-\e%(C_CRLF2)"
+	others
+		// 뤵딯댥둖궳궼204귩뺅몭궢궲쀇궋
+		"SHIORI/3.0 204 No Content%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF2)"
+	}
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.ControlAiTalk
+ *  ???갌AI긣?긏뵯벍룉뿚갂빾릶긢??궻렔벍뺎뫔룉뿚
+ *  덙릶?갌_argv[0] 귽긹깛긣뼹
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.ControlAiTalk
+{
+	if aitalkinterval > 0 && reference3 == 1 {		// 긣?긏듩둼궕뷄0갂궔궰cantalk뾎뚼
+		SHIORI3FW.Aitalkcount++
+
+		if SHIORI3FW.Aitalkcount > aitalkinterval {	// 긣?긏듩둼궻먠믦렄듩귩뎭궑궫
+			SHIORI3FW.Aitalkcount = 0
+			_argv[0] = "OnAiTalk"
+		}
+	}
+
+    SHIORI3FW.Svvercount++
+    if SHIORI3FW.Svvercount > 1800 {
+        SHIORI3FW.Svvercount = 0
+        SAVEVAR
+    }
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.MakeReferenceVariable
+ *  ???갌Reference*긶긞?궔귞reference*빾릶귩띿맟궢귏궥
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.MakeReferenceVariable
+{
+	SHIORI3FW.ReferenceList = IARRAY
+	_sz                     = ARRAYSIZE(var.req.key)
+	for _i = 0; _i < _sz; _i++ {
+		if SUBSTR(_keyname = REQ.KEY(_i), 0, 9) == "Reference" {
+			_value = REQ.VALUE(_i)
+			if GETTYPE(_value) == 3
+				_value = REPLACE(_value, CHR(1), ",")
+			_dmy = LETTONAME(_varname = "reference%(SUBSTR(_keyname, 9, 3))", _value)
+			SHIORI3FW.ReferenceList ,= _varname
+		}
+	}
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.ClearReferenceVariable
+ *  ???갌reference*빾릶귩랁룣궢귏궥
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.ClearReferenceVariable
+{
+	foreach SHIORI3FW.ReferenceList; _refname { ERASEVAR(_refname) }
+	ERASEVAR("SHIORI3FW.ReferenceList")
+}
+
+/****************************************************************************************
+ *  ?긃귽깛맕뚥
+ ****************************************************************************************
+*/
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.InitChain
+ *  ???갌룊딖돸
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.InitChain
+{
+	CHAIN.IDName = ""
+	CHAIN.Index  = 0
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.StartChainTalk
+ *  ???갌?긃귽깛륃뺪귩됶먏궢궲?긃귽깛룉뿚귩둎럑궢귏궥
+ *  덙릶?갌_argv[0] 긚긏깏긵긣
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.StartChainTalk
+{
+	// ?긃귽깛뼹궕뼰궋궶귞돺귖궢궶궋
+	if _argv[0] == ""; return
+
+	// ?긃귽깛떗맕뢎뿹룉뿚
+	if _argv[0] == "end"
+		SHIORI3FW.EndChainTalk
+	// 륷궫궸?긃귽깛둎럑
+	else {
+		CHAIN.IDName = _argv[0]
+		CHAIN.Index  = 0
+	}
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌ChainTalk
+ *  ???갌?긃귽깛룉뿚?긡깛긵깒?긣궻OnAiTalk궔귞렳뛱궠귢귏궥
+ * --------------------------------------------------------------------------------------
+*/
+//---- ?긃귽깛뵯벍룉뿚 (OnAiTalk 궔귞뚁궽귢귡) -----------------------------------------
+ChainTalk
+{
+	if (_res = EVAL(CHAIN.IDName)) == "" {
+		SHIORI3FW.EndChainTalk
+		RandomTalk
+	}
+	else
+		_res
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.EndChainTalk
+ *  ???갌?긃귽깛귩뢎뿹궢귏궥
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.EndChainTalk
+{
+	CHAIN.IDName = ""
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.ClearChainVariable
+ *  ???갌?긃귽깛맕뚥뾭궻빾릶귩뤑땸궢귏궥
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.ClearChainVariable
+{
+	ERASEVAR("CHAIN.IDName")
+	ERASEVAR("CHAIN.Index" )
+}
+
+
+
+
+
+
+OnChoiceSelect
+{
+	EVAL("Select.%(reference0)")
+}
+
+OnAiTalk
+{
+	if mode == "1"
+	{
+		AiTalk1
+	}
+	else
+	{
+		_talk = AiTalk
+		SETDELIM(_talk, ":talkmemo=")
+		_lastindex = ARRAYSIZE(_talk) - 1
+		if _lastindex > 0
+		{
+			talkmemo = _talk[_lastindex]
+			_lastlen = STRLEN(_talk[_lastindex])
+			_eraseindex = STRLEN(_talk) - _lastlen - 1
+			_erasesize = _lastlen + 1
+			_talk = ERASE(_talk, _eraseindex, _erasesize)
+		}
+		_talk
+	}
+}
+
+Select.ForcedTalk
+{
+	if ISVAR("talkmemo") == 1
+	{
+		ForcedTalk0
+		ERASEVAR("talkmemo")
+	}
+	else
+	{
+		ForcedTalk1
+	}
+}
+
+/****************************************************************************************
+ *  긨긞긣깗?긏뛛륷뚣궸궳궖궫 dl2 긲?귽깑궸듫궥귡룉뭫
+ ****************************************************************************************
+*/
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.Dl2ToDll
+ *  ???갌룉뿚궻둎럑
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.Dl2ToDll
+{
+	SHIORI3FW.ExecuteDl2ToDll("")
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.ExecuteDl2ToDll
+ *  ???갌럚믦궢궫긢귻깒긏긣깏궸뫔띪궥귡dl2귩룉뿚
+ *  덙릶?갌_argv[0] 룉뿚뫮뤭긬긚걁AYA dll궔귞궻몜뫮긬긚럚믦걂
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.ExecuteDl2ToDll
+{
+	// 럚믦긢귻깒긏긣깏볙궻긲?귽깑귩쀱땽
+	_files   = TOLOWER(FENUM(_argv[0]))
+	// 둮뮗럔dl2궻긲?귽깑귩깏긚긣궸?먑궥귡?럔긢귻깒긏긣깏볙귖띋딞밒궸룉뿚궥귡
+	_targets = IARRAY
+	foreach _files; _file {
+		if SUBSTR(_file, 0, 1) == "\"
+			SHIORI3FW.ExecuteDl2ToDll(_argv[0] + _file)
+		else {
+			_s_path = SPLITPATH(_file)
+			if _s_path[3] == ".dl2"
+				_targets ,= _s_path[2]
+		}
+	}
+
+	// 둮뮗럔dl2귩dll귉뼹멟빾뛛궥귡?땶dll궼뤑땸궥귡
+	foreach _targets; _target {
+		_path = _argv[0] + "\" + _target
+		_dmy = FDEL(_path + ".dll")
+		_dmy = FRENAME(_path + ".dl2", _path + ".dll")
+	}
+}
+
+/****************************************************************************************
+ *  귽깛긚긣?깑띙긕?긚긣깏긚긣궻?뭱
+ ****************************************************************************************
+*/
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌On_installedghostname
+ *  ???갌귽깛긚긣?깑띙긕?긚긣뼹믅뭢귽긹깛긣
+ * --------------------------------------------------------------------------------------
+*/
+On_installedghostname
+{
+	installedghostlist  = IARRAY
+	installedsakuralist = IARRAY
+	installedkerolist   = IARRAY
+
+	// materia갂귖궢궘궼귽긹깛긣궔귞궻롦벦궕럚렑궠귢궲궋궶궚귢궽긲?귽깑몪뜽궳롦벦궥귡룉뿚귩렳뛱
+	if basewarename == "embryo" || !IGLIST_ACCEL {
+		SHIORI3FW.StructInstalledGhostList
+		return
+	}
+
+	// Refrence궔귞롦벦
+	for _i = 0; 1; _i++ {
+		if (_name = EVAL("reference" + _i)) == ""; break
+		installedghostlist ,= _name
+	}
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.StructInstalledGhostList
+ *  ???갌?뭱
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.StructInstalledGhostList
+{
+	if !IGLIST_MAX; return
+
+	// ghost긢귻깒긏긣깏봹돷궻긢귻깒긏긣깏귩뭻뢯
+	_filelist = FENUM("..\..\..")
+	_dirlist  = IARRAY
+	foreach _filelist; _file {
+		if "\" _in_ _file; _dirlist ,= _file
+	}
+	_dirnum = ARRAYSIZE(_dirlist)
+
+	// 롦벦둎럑댧뭫궴롦벦릶귩땫귕귡
+	_num = 0
+	if IGLIST_MAX == -1 {
+		StructGhostList.Index = 0
+		_num                  = _dirnum
+	}
+	else {
+		if GETTYPE(StructGhostList.Index) != 1 || StructGhostList.Index >= _dirnum
+			StructGhostList.Index = 0
+		_num = IGLIST_MAX
+		if _num > _dirnum; _num = _dirname
+	}
+
+	// 깏긚긣띿맟롥룉뿚
+	for _i = 0; _i < _num; _i++, StructGhostList.Index++ {
+		// 롦벦댧뭫궻뛛륷
+		if StructGhostList.Index >= _dirnum; StructGhostList.Index = 0
+
+		// descript.txt궔귞륃뺪롦벦
+		_ghostname = SHIORI3FW.GetGhostNameFromDescriptTxt(/
+						"..\..\.." + _dirlist[StructGhostList.Index])
+		// 깏긚긣귉믁돿
+		if _ghostname != /*",,"*/"" {
+			installedghostlist  ,= _ghostname[0]
+			installedsakuralist ,= _ghostname[1]
+			installedkerolist   ,= _ghostname[2]
+		}
+	}
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.GetGhostNameFromDescriptTxt
+ *  ???갌descript.txt궔귞name/sakura.name/kero.name귩롦벦궢귏궥
+ *  덙릶?갌_argv[0] 롦벦뫮뤭궻긕?긚긣긢귻깒긏긣깏
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.GetGhostNameFromDescriptTxt
+{
+	if !FOPEN(_filename = "%_argv[0]\ghost\master\descript.txt", "r")
+		return
+
+	_ghostname = ",,"
+	_flag      = 0
+	while _flag != 7 {
+		if (_line = FREAD(_filename)) == -1; break
+		
+		case CUTSPACE(_line[0]) {
+			when "name" {
+				_ghostname[0] = CUTSPACE(_line[1])
+				_flag++
+			}
+			when "sakura.name" {
+				_ghostname[1] = CUTSPACE(_line[1])
+				_flag += 2
+			}
+			when "kero.name" {
+				_ghostname[2] = CUTSPACE(_line[1])
+				_flag += 4
+			}
+		}
+	}
+
+	FCLOSE(_filename)
+	_ghostname
+}
+
+/****************************************************************************************
+ *  빒 version 3 긘긚긡?듫릶 / 긘긚긡?빾릶궻뺚뒶
+ *  FUNCTIONEX / SAORI
+ ****************************************************************************************
+*/
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌FUNCTIONEX
+ *  ???갌SAORI귩렳뛱궢귏궥
+ *  덙릶?갌_argv[0]? 뫮뤭DLL뼹
+ *  ????_argv[1]? Argument0?
+ * --------------------------------------------------------------------------------------
+*/
+FUNCTIONEX
+{
+	// load?긄깋?궶귞뵴궚귡?룊됷궻load궶귞GET Version귩몭뢯궥귡
+	_r_load = LOADLIB(_argv[0])
+	if !_r_load {
+		0
+		return
+	}
+	if _r_load == 1 {
+		if SUBSTR(SHIORI3FW.SendGETVersion(_argv[0]), 0, 1) != "2" {
+			UNLOADLIB(_argv[0])
+			0
+			return
+		}
+		SAORI.DllList ,= _argv[0]
+	}
+
+	// 깏긏긄긚긣빒럻쀱귩띿맟
+	_reqheader = /
+		"EXECUTE SAORI/1.0%(C_CRLF)Sender: AYA%(C_CRLF)SecurityLevel: Local%(C_CRLF)"
+	for _i = 1; _i < _argc; _i++ {
+		_reqheader += "Argument%(_i - 1): %(_argv[_i])%(C_CRLF)"
+	}
+	_reqheader += C_CRLF
+
+	// 렳뛱
+	SHIORI3FW.RequestLib(_argv[0], _reqheader)
+
+	_result = LIB.VALUE("Result")
+	if _result != ""
+		_result
+	SHIORI3FW.MakeValueexVariable
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SAORI
+ *  ???갌SAORI귩렳뛱궢귏궥
+ *
+ *  FUNCTIONEX궻긘긩긦?갃덇뭝돷뫪궕볺귡빁FUNCTIONEX귝귟믟뫊궸궶귟귏궥궕갂딠궸궥귡귌궵궳궼
+ *  궇귟귏궧귪갃
+ * --------------------------------------------------------------------------------------
+*/
+SAORI { FUNCTIONEX(_argv) }
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.SendGETVersion
+ *  ???갌SAORI귉GET Version귩몭뢯궢귏궥
+ *  덙릶?갌_argv[0] SAORI긲?귽깑뼹
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.SendGETVersion
+{
+	SHIORI3FW.RequestLib(_argv[0], "GET Version SAORI/1.0%(C_CRLF)Sender: AYA%(C_CRLF2)")
+
+	LIB.STATUSCODE
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.RequestLib
+ *  ???갌SAORI귉깏긏긄긚긣귩몭뢯궢갂뙅됈귩벦귏궥
+ *  덙릶?갌_argv[0] SAORI긲?귽깑뼹
+ *  ????_argv[1] 깏긏긄긚긣빒럻쀱
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.RequestLib
+{
+	LIB.PROTOCOL   = ""
+	LIB.STATUSCODE = ""
+	var.lib.key    = IARRAY
+	var.lib.value  = IARRAY
+
+	// 깏긏긄긚긣몭뢯
+	_result = REQUESTLIB(_argv[0], _argv[1])
+
+	// 뙅됈궻됶먏
+
+	// 둂뛱궳빁뒆
+	_lines = RE_SPLIT(_result, C_CRLF)
+
+	// 긵깓긣긓깑뼹궴뙅됈궻롦벦
+	_seppos = STRSTR(_lines[0], " ", 0)
+	if _seppos == -1; return
+	LIB.PROTOCOL   = SUBSTR(_lines[0], 0, _seppos)
+	LIB.STATUSCODE = SUBSTR(_lines[0], _seppos + 1, STRLEN(_lines[0]) - _seppos - 1)
+
+	// 깒긚?깛긚긶긞?궻롦벦
+	var.lib.key   = IARRAY
+	var.lib.value = IARRAY
+	_skip = 1
+	foreach _lines; _lin {
+		// 1뛱뽞궼뷅궽궥
+		if _skip {
+			_skip = 0
+			continue
+		}
+
+		// 긌?궴뭠귩롦벦
+		_len         = STRLEN(_lin)
+		_pos         = STRSTR(_lin, ": ", 0)
+		var.lib.key ,= (_key = SUBSTR(_lin, 0, _pos))
+		_value       = SUBSTR(_lin, _pos + 2, _len - _pos - 2)
+
+		if ISINTSTR(_value)
+			var.lib.value ,= TOINT(_value)
+		elseif ISREALSTR(_value)
+			var.lib.value ,= TOREAL(_value)
+		else
+			var.lib.value ,= REPLACE(_value, C_BYTE1, ",")
+	}
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.MakeValueexVariable
+ *  ???갌깏긏긄긚긣긶긞?궔귞valueex*빾릶귩띿맟궢귏궥
+ *  덙릶?갌_argv[0] SAORI긲?귽깑뼹
+ *  ????_argv[1] 깏긏긄긚긣빒럻쀱
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.MakeValueexVariable
+{
+	SHIORI3FW.ValueexList = IARRAY
+	_sz                   = ARRAYSIZE(var.lib.key)
+	for _i = 0; _i < _sz; _i++ {
+		if SUBSTR(_keyname = LIB.KEY(_i), 0, 5) == "Value" {
+			_dmy = LETTONAME(_varname = "valueex%(SUBSTR(_keyname, 5, 3))", LIB.VALUE(_i))
+			SHIORI3FW.ValueexList ,= _varname
+		}
+	}
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.ClearValueexVariable
+ *  ???갌valueex*빾릶귩랁룣궢귏궥
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.ClearValueexVariable
+{
+	foreach SHIORI3FW.ValueexList; _exname { ERASEVAR(_exname) }
+}
+
+/*---------------------------------------------------------------------------------------
+ *  듫릶뼹갌SHIORI3FW.SaoriUnloadAll
+ *  ???갌깓?긤궠귢궲궋귡SAORI귩궥귊궲unload궢귏궥
+ * --------------------------------------------------------------------------------------
+*/
+SHIORI3FW.SaoriUnloadAll
+{
+	foreach SAORI.DllList; _saori { UNLOADLIB(_saori) }
+
+	SAORI.DllList = IARRAY
+}
+
+/****************************************************************************************
+ *  빒 version 4 긘긚긡?듫릶 / 긘긚긡?빾릶궻뺚뒶
+ *  - REQ똭듫릶
+ ****************************************************************************************
+*/
+
+//----
+
+REQ.KEY
+{
+	if !_argc; return
+
+	switch GETTYPE(_i = _argv[0]) {
+		// 긄깋?
+		""
+
+		// 댧뭫럚믦
+		var.req.key[_i];
+
+		// 댧뭫럚믦걁렳릶걂?맢릶돸궢궲룉뿚
+		var.req.key[TOINT(_i)]
+
+		// 빒럻쀱궼긄깋?
+		""
+	}
+}
+
+//----
+
+REQ.HEADER
+{
+	REQ.KEY(_argv)
+}
+
+//----
+
+REQ.VALUE
+{
+	if !_argc; return
+
+	switch GETTYPE(_i = _argv[0]) {
+		// 긄깋?
+		""
+
+		// 댧뭫럚믦
+		var.req.value[_i];
+
+		// 댧뭫럚믦걁렳릶걂?맢릶돸궢궲룉뿚
+		var.req.value[TOINT(_i)]
+
+		// 뼹멟럚믦
+		{
+			_sz = ARRAYSIZE(var.req.key)
+			for _j = 0; _j < _sz; _j++ {
+				if (var.req.key[_j] == _i) {
+					var.req.value[_j]
+					break
+				}
+			}
+		}
+	}
+}
+
+/****************************************************************************************
+ *  빒 version 4 긘긚긡?듫릶 / 긘긚긡?빾릶궻뺚뒶
+ *  - LIB똭듫릶
+ ****************************************************************************************
+*/
+LIB.KEY
+{
+	if !_argc; return
+
+	switch GETTYPE(_i = _argv[0]) {
+		// 긄깋?
+		""
+
+		// 댧뭫럚믦
+		var.lib.key[_i];
+
+		// 댧뭫럚믦걁렳릶걂?맢릶돸궢궲룉뿚
+		var.lib.key[TOINT(_i)]
+
+		// 빒럻쀱궼긄깋?
+		""
+	}
+}
+
+//----
+
+LIB.HEADER
+{
+	LIB.KEY(_argv)
+}
+
+//----
+
+LIB.VALUE
+{
+	if !_argc; return
+
+	switch GETTYPE(_i = _argv[0]) {
+		// 긄깋?
+		""
+
+		// 댧뭫럚믦
+		var.lib.value[_i];
+
+		// 댧뭫럚믦걁렳릶걂?맢릶돸궢궲룉뿚
+		var.lib.value[TOINT(_i)]
+
+		// 뼹멟럚믦
+		{
+			_sz = ARRAYSIZE(var.lib.key)
+			for _j = 0; _j < _sz; _j++ {
+				if (var.lib.key[_j] == _i) {
+					var.lib.value[_j]
+					break
+				}
+			}
+		}
+	}
+}
+
+/****************************************************************************************
+ *  빒 version 4 긘긚긡?듫릶 / 긘긚긡?빾릶궻뺚뒶
+ *  - 렄뜌똭빾릶
+ ****************************************************************************************
+*/
+year    { GETTIME[0] }
+month   { GETTIME[1] }
+day     { GETTIME[2] }
+weekday { GETTIME[3] }
+hour    { GETTIME[4] }
+ampm    { if hour >= 12; 1;   else; 0    }
+hour12  { if ampm; hour - 12; else; hour }
+minute  { GETTIME[5] }
+second  { GETTIME[6] }
+
+systemuptickcount { GETTICKCOUNT }
+systemuptime
+{
+	_highcount = GETTICKCOUNT(1)
+	if _highcount > 1
+		GETTICKCOUNT/1000
+	else
+		(_highcount*0x40000000 + (GETTICKCOUNT/2))/500
+}
+
+systemupsecond    { SHIORI3FW.GetTickInfo[3] }
+systemupminute    { SHIORI3FW.GetTickInfo[1] }
+systemuphour      { SHIORI3FW.GetTickInfo[2] }
+
+SHIORI3FW.GetTickInfo
+{
+	_result     = (IARRAY, systemuptime)
+	_result    ,= _result[0]/60
+	_result    ,= _result[1]/60
+	_result    ,= _result[0] - _result[1]*60
+	_result[1] -= _result[2]*60
+
+	_result
+}
+
+/****************************************************************************************
+ *  빒 version 4 긘긚긡?듫릶 / 긘긚긡?빾릶궻뺚뒶
+ *  - 긽긾깏똭빾릶
+ ****************************************************************************************
+*/
+memoryload         { GETMEMINFO[0] }
+memorytotalphys    { GETMEMINFO[1] }
+memoryavailphys    { GETMEMINFO[2] }
+memorytotalvirtual { GETMEMINFO[3] }
+memoryavailvirtual { GETMEMINFO[4] }
+
+/****************************************************************************************
+ *  빒 version 4 긘긚긡?듫릶 / 긘긚긡?빾릶궻뺚뒶
+ *  - 붍뾭듫릶
+ ****************************************************************************************
+*/
+
+ASC
+{
+	if !_argc;                              " "
+	elseif GETTYPE(_argv[0]) != 1;          " "
+	elseif _argv[0] < 0 || _argv[0] > 0x7f; " "
+	else;                                   CHR(_argv[0])
+}
+
+//----
+
+IASC
+{
+	if !_argc;                     -1
+	elseif GETTYPE(_argv[0]) != 3; -1
+	elseif !STRLEN(_argv[0]);      -1
+	else;                          CHRCODE(_argv[0])
+}
+
+//----
+
+ISINSIDE
+{
+	if _argc < 3;                                             0
+	elseif  (_argv[1] <= _argv[0] && _argv[0] <= _argv[2]) ||/
+			(_argv[2] <= _argv[0] && _argv[0] <= _argv[1]);   1
+	else;                                                     0
+}
+
+//----
+
+ISREAL
+{
+	if !_argc;                     0
+	elseif GETTYPE(_argv[0]) == 2; 1
+	else;                          0
+}
+
+//----
+
+ISINTEGER
+{
+	if !_argc;                     0
+	elseif GETTYPE(_argv[0]) == 1; 1
+	else;                          0
+}
+
+/****************************************************************************************
+ *  빒 version 4 댥멟궻빾릶/듫릶궻뺚뒶
+ ****************************************************************************************
+*/
+
+restore_old_variables
+{
+    // ascii
+    ascii = IARRAY
+    for _i = 0; _i <= 0x7f; _i++ {
+        ascii ,= CHR(_i)
+    }
+}

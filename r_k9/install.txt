@@ -4,10 +4,10 @@
 
 charset,UTF-8
 type,ghost
-name,GT Ghost Template
-directory,gt_template
+name,K9
+directory,r_k9
 
 
 //This tells the program what balloon your ghost will be using. Replace "z_simple" and point it at your balloon directory if you've made one, or use a default balloon directory.
 
-balloon.directory,z_simple
+balloon.directory,Cyber Connector

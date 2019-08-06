@@ -4,7 +4,6 @@
 </p>
 
 Readme will be completed in the future, right now it's just a place holder for our lovely boy.
-## What is an Ukagaka, or 'Ghost'?
 
 ## Installation
 

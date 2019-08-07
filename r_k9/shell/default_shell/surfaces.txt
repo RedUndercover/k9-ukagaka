@@ -498,13 +498,11 @@ element1,overlay,surface2509.png,0,0
 
 //If you messed with the default Emily ghost at all, you may have noticed that when your cursor was over her chest, it changed to a sort of gripping hand instead of a pointer finger. "How do I do that?" you may wonder. Setting up sakura.cursor is how!
 
-//sakura.cursor 
-//{ 
-//mouseup0,Head,system:hand 
-//mousedown0,Head,system:finger 
-//mouseup1,Face,system:hand 
-//mousedown1,Face,system:grip 
-//} 
+sakura.cursor 
+{ 
+mouseup0,Head,system:hand 
+mouseup0,Face,system:finger  
+} 
 
 //What this does is change the mouse cursor. You can see it's split into mouseup and mousedown, and it uses the names you gave your Collisions up there. So when the mouse is hovering over Girl's head, it uses the system cursor that looks like a hand. When you click and hold, it looks like a finger. You can uncomment these lines to see for yourself. Likewise, when you hover your mouse over Girl's face, it looks like a hand, and when you click down, it looks like a gripping hand. You can keep adding unique cursors for all your collisions by sequentially numbering them, like mouseup/down2, mouseup/down3, and so on.
 
@@ -517,11 +515,10 @@ element1,overlay,surface2509.png,0,0
 
 //Maybe you'd like a tooltip to pop up when your user is hovering over a hitbox on your ghost. It works much the same as above!
 
-//sakura.tooltips 
-//{ 
-//Head,This is Girl's head. 
-//Face,This is Girl's face.  
-//}
+sakura.tooltips 
+{ 
+Head,Move cursor here to pet K9.
+}
 
 //Basically put the name of your collision first, then what you want the tooltip to say. Uncomment this function and hover over Girl's hotspots and you can see how it works. It may be handy for warning your users about punching your ghost or something, or for silly reasons, I dunno. It's up to you!
 //Like above, replace sakura with kero for the secondary character.

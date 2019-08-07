@@ -35,4 +35,4 @@ shiori,yaya.dll
 //This next bit defines what icon your ghost will use in your taskbar. Replace "gt_template.ico" with the icon file you're going to be using.
 //To make an icon file, draw yourself a 16x16 image for your ghost and save it as a png. I then went to a free site to convert it to an ico file. I believe it was this site - http://www.convertico.com/ but I can't quite remember. Anyway, I'm sure some quick googling will find a site that'll convert your png into an ico for you.
 
-icon,gt_template.ico
+icon,k9_icon.ico

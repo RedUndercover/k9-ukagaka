@@ -11,7 +11,7 @@
 //--OnTeachName
 //This is called from the config menu in the main character's double click menu when the user says they want to change their name. If you look in menu.dic you'll see the code leading to here.
 
-OnTeachName	
+OnTeachName
 {
 	if reference0 == "TEACHNAME" //ignore this
 		{
@@ -31,7 +31,7 @@ OnTeachName
 //OnNameTeach
 // {
 	//tempname = reference0
-	
+
 //"\0\s[0]Do you want a title?\w4\n\n[half]\![*]\q[Nope,titlenone]\n"
 	//	--
 	//	if presuffix == "masculine"
@@ -39,12 +39,12 @@ OnTeachName
 	//	"\![*]\q[Mr.,titlemr]\n/
 	//	\![*]\q[Master,titlemaster]\n"
 	//	}
-	//	elseif presuffix == "feminine" 
+	//	elseif presuffix == "feminine"
 	//	{
 	//	"\![*]\q[Ms.,titlems]\n/
 	//	\![*]\q[Lady,titlelady]\n"
 	//	}
-	//	-- 
+	//	--
 	//	"\![*]\q[-ssi,titlessi]\n/
 	//	\![*]\q[-san,titlesan]\e"
 // }
@@ -54,7 +54,7 @@ OnTeachName
 OnNameTeach
 {
 	tempname = reference0 //this stores the name value temporarily in reference0
-	
+
 	if reference0 == "K9" || reference0 == "K-9" //this checks to see if the user input the name "Girl" OR (that's what || means) "girl". You may want to put in a check here if the user tries to name themselves the same name as your characters, since that could be confusing in dialogue. Or just a response to any kind of strange name, like Barack Obama or Cindy Crawford or Mike Nelson or Random Hajile. Or you can prevent certain offensive names if you don't want users using them. Really the power is yours here. The OR operator there with "Girl" and "girl" is to cover people using lowercase as well. More on operators in the walkthrough page on coding.
 	{
 		"\0\s[0]That is my name. Please choose another.\![open,inputbox,OnNameTeach,-1]"
@@ -68,13 +68,13 @@ OnNameTeach
 	elseif reference0 == "" || reference0 == " " || reference0 == "   " //This is if the user doesn't put in a name at all, since that'd also get awkward in dialogue. Admittedly if a user REALLY wanted to put a ton of spaces as their name, the OR operators can only go so far, but this situation would mostly come up by accident I'd figure from a user hitting enter too quickly.
 	{
 		username = "NULL" //this sets the user's name to NULL.
-		
+
 		"\0\s[0]You did not identify yourself. \w4\0\s[0]I will call you NULL.\e"
 		//You can change this snip to whatever.
 	}
-	else //if the user put in something not specified above, ie a proper name the ghost can use. 
+	else //if the user put in something not specified above, ie a proper name the ghost can use.
 	{
-		"\0\s[0]Do you do you want a title?\w4\n\n[half]\![*]\q[No,titlenone]\n"
+		"\0\s[0]Do you want a title?\w4\n\n[half]\![*]\q[No,titlenone]\n"
 		//You can replace "\0\s[0]Do you want a title?", but don't touch the rest of it.
 		--
 		if presuffix == "masculine" //this value was defined in bootend.dic and menu.dic when the user chose their pronouns. Thus, if someone chose he/him pronouns, they would be able to choose Mr. or Master.
@@ -96,7 +96,7 @@ OnNameTeach
 }
 	//*********************Advanced User Info*******************************
 	//Adding new titles for your users to use is simply a matter of copy and pasting creatively. You can see how the ghost puts together the title and your name in the Select. sections below. Above, you simply need to add a new option and link it to a new Select. For example, you could add "\![*]\q[Mistress,titlemistress]\n/" between Ms. and Lady up there, then write up a Select.titlemistress below that fits the pattern of the others.
-	
+
 	//If you are removing the pronoun system entirely, what you'd want to do is erase everything in that else statement above regarding titles and replace it with something like this.
 	//else
 	//{
@@ -104,54 +104,62 @@ OnNameTeach
 	//"\0\s[0]The user is now called %(username).\e"
 	//}
 	//***********************************************************************
-	
+
 	//The following Select.title[word] functions add the title to the user's name, then go to the final step, NameDone. You don't have to touch any of these. Advanced users, notice how these match the linked functions in the choices above.
-	
+
 Select.titlenone
 {
 		username = tempname
+		usrTitle = username
 		NameDone
 }
 
 Select.titlemr
 {
 		username = "Mr. " + tempname
+		usrTitle = "Mister"
 		NameDone
 }
 
 Select.titlelord
 {
 		username = "Lord " + tempname
+		usrTitle = "Lord"
 		NameDone
 }
 
 Select.titlemaster
 {
 		username = "Master " + tempname
+		usrTitle = "Master"
 		NameDone
 }
-		
+
 Select.titlems
 {
 		username = "Ms. " + tempname
+		usrTitle = "Miss"
 		NameDone
 }
 
 Select.titlelady
 {
 		username = "Lady " + tempname
+		usrTitle = "Lady"
 		NameDone
 }
 
 Select.titlemistress
 {
 		username = "Mistress " + tempname
+		usrTitle = "Mistress"
 		NameDone
 }
 
 Select.titlemx
 {
 		username = "Mx. " + tempname
+		usrTitle = "Mx."
 		NameDone
 }
 

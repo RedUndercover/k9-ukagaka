@@ -15,9 +15,9 @@
 
 OpenSakuraMenu
 {
-		"\0\s[0]\b2This is the first random menu open dialogue."
-		"\0\s[0]\b2This is the second random menu open dialogue."
-		"\0\s[0]\b2This is the third random menu open dialogue."
+		"\0\s[0]\b2Greetings."
+		"\0\s[0]\b2Welcome."
+		"\0\s[0]\b2Yeehaw."
 		--
 		MenuRun
 }
@@ -191,7 +191,7 @@ Select.choicemasc
 	heshe = "he"
 	hisher = "his"
 	--
-	"\0\s[0]The pronouns are now he him and his.\e"
+	"\0\s[0]The pronouns are now he, him, and his.\e"
 	//Leave the part above the double dashes alone. You can replace the snip of dialogue however with whatever you like.
 }
 
@@ -202,7 +202,7 @@ Select.choicefem
 	heshe = "she"
 	hisher = "her"
 	--
-	"\0\s[0]The pronouns are now she her and her.\e"
+	"\0\s[0]The pronouns are now she, her, and her.\e"
 	//as above, you can also replace this dialogue.
 }
 
@@ -213,7 +213,7 @@ Select.choiceneither
 	heshe = "Master"
 	hisher = "Master"
 	--
-	"\0\s[0]The pronouns are now they them and their.\e"
+	"\0\s[0]The pronouns are now they, them, and their.\e"
 	//and this one.
 }
 

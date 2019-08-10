@@ -15,7 +15,7 @@ OnTeachName
 {
 	if reference0 == "TEACHNAME" //ignore this
 		{
-		"\0\s[0]The user wants to change their name. What do you want it to be?\![open,inputbox,OnNameTeach,-1]\e"
+		"\0\s[0]Initiating re-identification. What is your name?\![open,inputbox,OnNameTeach,-1]\e"
 		//This is the bit of dialogue you can rewrite if you want. Note that this line ends with \![open,inputbox,OnNameTeach,-1]. You may recognize this from bootend.dic. Essentially, this will lead to the next function. Make sure you don't delete that tag! The rest you can do whatever with though.
 		}
 	else
@@ -55,41 +55,42 @@ OnNameTeach
 {
 	tempname = reference0 //this stores the name value temporarily in reference0
 	
-	if reference0 == "Girl" || reference0 == "girl" //this checks to see if the user input the name "Girl" OR (that's what || means) "girl". You may want to put in a check here if the user tries to name themselves the same name as your characters, since that could be confusing in dialogue. Or just a response to any kind of strange name, like Barack Obama or Cindy Crawford or Mike Nelson or Random Hajile. Or you can prevent certain offensive names if you don't want users using them. Really the power is yours here. The OR operator there with "Girl" and "girl" is to cover people using lowercase as well. More on operators in the walkthrough page on coding.
+	if reference0 == "K9" || reference0 == "K-9" //this checks to see if the user input the name "Girl" OR (that's what || means) "girl". You may want to put in a check here if the user tries to name themselves the same name as your characters, since that could be confusing in dialogue. Or just a response to any kind of strange name, like Barack Obama or Cindy Crawford or Mike Nelson or Random Hajile. Or you can prevent certain offensive names if you don't want users using them. Really the power is yours here. The OR operator there with "Girl" and "girl" is to cover people using lowercase as well. More on operators in the walkthrough page on coding.
 	{
-		"\0\s[0]That's my name.\w8\1\s[10]That might be confusing. You should try again.\![open,inputbox,OnNameTeach,-1]"
+		"\0\s[0]That is my name. Please choose another.\![open,inputbox,OnNameTeach,-1]"
 		//Note here that it's using the same tag as above to reopen the text box to let the user put in another name. You can replace the dialogue with whatever as long as you keep the \![open,inputbox,OnNameTeach,-1] tag.
 	}
-	elseif reference0 == "Triangle" || reference0 == "triangle" //like the above, this checks to see if the user put in Triangle OR triangle. Again, this is mostly to avoid confusion in dialogue between the user and the characters.
+	elseif reference0 == "Leela" || reference0 == "leela" || reference0 == "Romana" || reference0 == "romana" || reference0 == "Sarah Jane" || reference0 == "Sarah-Jane" //like the above, this checks to see if the user put in Triangle OR triangle. Again, this is mostly to avoid confusion in dialogue between the user and the characters.
 	{
-		"\1\s[10]That's my name. Try putting in another one.\![open,inputbox,OnNameTeach,-1]"
+		"\0\s[0]That was my mistress' name. \w4.\w4.\w4.\w8 I will allow you to use it.\e"
 		//See again that this ends with the same tag to reopen the input box. Again, replace but keep the \![open,inputbox,OnNameTeach,-1] tag at the end.
 	}
 	elseif reference0 == "" || reference0 == " " || reference0 == "   " //This is if the user doesn't put in a name at all, since that'd also get awkward in dialogue. Admittedly if a user REALLY wanted to put a ton of spaces as their name, the OR operators can only go so far, but this situation would mostly come up by accident I'd figure from a user hitting enter too quickly.
 	{
 		username = "NULL" //this sets the user's name to NULL.
 		
-		"\1\s[10]You didn't put in anything.\w8\0\s[0]We will call you NULL.\e"
+		"\0\s[0]You did not identify yourself. \w4\0\s[0]I will call you NULL.\e"
 		//You can change this snip to whatever.
 	}
 	else //if the user put in something not specified above, ie a proper name the ghost can use. 
 	{
-		"\0\s[0]Do you want a title?\w4\n\n[half]\![*]\q[Nope,titlenone]\n"
+		"\0\s[0]Do you do you want a title?\w4\n\n[half]\![*]\q[No,titlenone]\n"
 		//You can replace "\0\s[0]Do you want a title?", but don't touch the rest of it.
 		--
 		if presuffix == "masculine" //this value was defined in bootend.dic and menu.dic when the user chose their pronouns. Thus, if someone chose he/him pronouns, they would be able to choose Mr. or Master.
 		{
-		"\![*]\q[Mr.,titlemr]\n/
-		\![*]\q[Master,titlemaster]\n"
+		"\![*]\q[Mr.,titlemr]\n"
 		}
 		elseif presuffix == "feminine" //Likewise, if someone chose she/her pronouns, they could choose Ms. or Lady.
 		{
 		"\![*]\q[Ms.,titlems]\n/
-		\![*]\q[Lady,titlelady]\n"
+		\![*]\q[Lady,titlelady]\n/
+		\![*]\q[Mistress,titlemistress]\n"
 		}
 		-- //the titles after this are gender neutral and will appear for all users. If you want to remove the masculine and feminine titles entirely, just delete from the curly bracket one line up to the double dashes above "if presuffix == "masculine". That should leave only the neutral titles. Make sure to leave a set of double dashes above the neutral titles though.
-		"\![*]\q[-ssi,titlessi]\n/
-		\![*]\q[-san,titlesan]\e"
+		"\![*]\q[Mx.,titlemx]\n/
+		\![*]\q[Lord,titlelord]\n/
+		\![*]\q[Master,titlemaster]\e"
 		//Note that the final line here ends with \e instead of \n/, since it is the final option. If you're copying and pasting to add new options, don't use the final line. More on that in the box below.
 	}
 }
@@ -118,6 +119,12 @@ Select.titlemr
 		NameDone
 }
 
+Select.titlelord
+{
+		username = "Lord " + tempname
+		NameDone
+}
+
 Select.titlemaster
 {
 		username = "Master " + tempname
@@ -136,23 +143,24 @@ Select.titlelady
 		NameDone
 }
 
-Select.titlessi
+Select.titlemistress
 {
-		username = tempname + "-ssi"
+		username = "Mistress " + tempname
 		NameDone
 }
 
-Select.titlesan
+Select.titlemx
 {
-		username = tempname + "-san"
+		username = "Mx. " + tempname
 		NameDone
 }
+
 
 //--NameDone
 //This is the final bit of dialogue your ghosts will have when the user changes their name.
 
 NameDone
 {
-		"\0\s[0]The user is now called %(username).\e"
+		"\0\s[0]Memorised. I will now address you as %(username).\e"
 		//Rewrite this as you like. Note the %(username) tag here, as you should be well familiar with by now from the walkthrough and the other .dic files. That will display the name the user just created.
 }

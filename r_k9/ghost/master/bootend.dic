@@ -42,6 +42,7 @@ OnFirstBoot
 	talktime = "5 minutes" //How the value aitalkinterval will display in the config menu.
 	deleteshitai = "OFF" //Sets whether or not the user can uninstall the ghost to "OFF". The user can change it later in the config menu (see menu.dic).
 	nowshell = "default_shell" //This is for a special if check in aitalk.dic to see what shell the ghost is using. You should use the name of your default shell folder here.
+  usrTitle = "NULL" //Placeholder value for the title
 
 	if reference0 == 0 //Don't touch this line.
  	{

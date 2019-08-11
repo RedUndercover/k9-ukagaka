@@ -51,7 +51,7 @@ OnFirstBoot
 		//You'll also notice that this dialogue is black instead of grey. This is because of the use of the backwards slash as mentioned in the advanced section of the SakuraScripting page. Do you see near the bottom where it has \n\n[half]/ with the other slash at the end before the choices are listed? You will want to replace dialogue up that \n\n[half], but do not mess with the choices beyond that unless you know what you're doing.
 		//Always make sure to keep your dialogue in the quotation marks! And remember, you can't use quotation marks IN dialogue either. You can use two single apostrophes instead if you must. And REMEMBER what I said about \![enter,passivemode]! Do NOT delete that tag!
 
-		"\![enter,passivemode]\1\s[10]\0\s[0]Hello, and welcome to the Girl and Triangle Ghost Template. \w5My name is Girl, and that's Triangle over there.\w8\1\s[10]Sup. \w8\0\s[0]\n\n[half]If you downloaded this template, you are presumably interested in making a ghost. \w5This template has been designed to help you do that. \w5Please make sure to carefully read the included readme file. \w8\1\n\n[half]\s[10]Each of the .dic files you'll be editing has a lot of commentary to guide you.\w8\0\s[0]\n\n[half]In the future, you will be replacing this dialogue with the dialogue for your own ghost. \w5This is a good place to introduce your characters.\w8\1\n\n[half]\s[10]You can have your characters banter with each other and explain how the ghost works and how to access menus.\x\c\0\s[0]More details about dialogue coding will be in the walkthrough page.\w8\1\c\s[10]Now we're going to ask the user the first question about themselves, namely what pronouns they want us to use.\w8\0\s[0]\n\n[half]This will let us construct grammatically correct sentences referring to the user later.\x\w8\1\c\s[10]How should we refer to you, user?\n\n[half]/
+		"\![enter,passivemode]\0\s[0]\0\s[0]Hello, and welcome to the Girl and Triangle Ghost Template. \w5My name is Girl, and that's Triangle over there.\w8\0\s[0]Sup. \w8\0\s[0]\n\n[half]If you downloaded this template, you are presumably interested in making a ghost. \w5This template has been designed to help you do that. \w5Please make sure to carefully read the included readme file. \w8\0\n\n[half]\s[0]Each of the .dic files you'll be editing has a lot of commentary to guide you.\w8\0\s[0]\n\n[half]In the future, you will be replacing this dialogue with the dialogue for your own ghost. \w5This is a good place to introduce your characters.\w8\0\n\n[half]\s[0]You can have your characters banter with each other and explain how the ghost works and how to access menus.\x\c\0\s[0]More details about dialogue coding will be in the walkthrough page.\w8\0\c\s[0]Now we're going to ask the user the first question about themselves, namely what pronouns they want us to use.\w8\0\s[0]\n\n[half]This will let us construct grammatically correct sentences referring to the user later.\x\w8\0\c\s[0]How should we refer to you, user?\n\n[half]/
 		\w5\_q\![*]\q[He/Him/His,choicefirsthehim]\n/
 		\![*]\q[She/Her/Hers,choicefirstsheher]\n/
 		\![*]\q[They/Them/Their,choicefirsttheythem]\e"
@@ -74,7 +74,7 @@ OnFirstBoot
  	{
 		//---- This is dialogue for when you load them after the first time. It's a failsafe, as the OnBoot dialogue will mostly pre-empt it, but you can't be too careful. You'll see this if you try to run OnFirstBoot using ![raise].
  		{
- 		"\1\s[10]\0\s[0]This is the alternate OnFirstBoot dialogue.\e"
+ 		"\0\s[0]\0\s[0]This is the alternate OnFirstBoot dialogue.\e"
 		}
  	}
 }
@@ -132,7 +132,7 @@ NameInput
 {
 	//Note that there's a \![leave,passivemode] tag in this dialogue! Don't forget about this! If you leave them in passivemode they won't talk at all and it'd sort of defeat the purpose, right? I actually forgot this for a while with Hunter and Smoker and didn't notice because OnFirstBoot only runs once, so it took me some testing to find out what was wrong. Always make sure to leave passivemode when you're done with it!
 
-	"\1\s[10]Now that the pronouns are set, we will ask for the user's name. \![leave,passivemode]\w8\0\s[0]What is your name, user? \![open,inputbox,OnNameTeach,-1]\e"
+	"\0\s[0]Now that the pronouns are set, we will ask for the user's name. \![leave,passivemode]\w8\0\s[0]What is your name, user? \![open,inputbox,OnNameTeach,-1]\e"
 
 	//At the end of this dialogue there's a tag saying "\![open,inputbox,OnNameTeach,-1]". It basically leads to the naming function defined in nameteach.dic, so don't touch it. Make sure it's there though! Otherwise your user won't have a way to put in their name. :o
 
@@ -211,7 +211,7 @@ OnBoot
 	passmin = 0
 	passsec = 0
 
- 	"\0\s[0]\1\s[10]" //This sets them up in their neutral pose for now.
+ 	"\0\s[0]\0\s[0]" //This sets them up in their neutral pose for now.
 
 	//If you don't want to deal with individual day messages when you boot them, you can delete everything down to the end bracket for OnBoot (use Notepad++'s bracket tracking abilities to find where it is!) and instead add "%(normalboottalk)" to the end of the snip of dialogue up there that sets them up in their neutral poses. I'm pretty sure that should shortcut it properly.  Otherwise, read on ahead!
 	--
@@ -228,7 +228,7 @@ OnBoot
 	//***********************************************************************
 
 	{
-				"\0\s[0]It's %(bornmonthprint) %(borndayprint).\w8\1\s[10]Happy birthday, %(username).\e"
+				"\0\s[0]It's %(bornmonthprint) %(borndayprint).\w8\0\s[0]Happy birthday, %(username).\e"
 
 				//Notice in this dialogue that there are two new envelopes, %(bornmonthprint) and %(borndayprint). These two things basically display the user's birthday - bornmonthprint is the month and borndayprint is the day. These were defined when the user put in their birthday in the menu.dic file. See word.dic for more info on envelopes.
 				//If the user didn't or hasn't put in their birthday yet, this dialogue will basically never get called. Which makes sense.
@@ -245,7 +245,7 @@ OnBoot
 	}
 	elseif dayslot == "7month 4day"
 	{
-				"\1\s[10]It's the fourth of July.\e"
+				"\0\s[0]It's the fourth of July.\e"
 
 				//You can see how these basically work. You can add in new elseif statements along these same lines with your own dayslots if you want to have them say things for all sorts of days. You can also change these existing ones I put in as examples to other dates, like your character's birthdays, perhaps. This is up to you! If you don't care about this, you can delete all the elseifs and just leave the one for the user's birthday.
 	}
@@ -276,11 +276,11 @@ normalboottalk
 		}
 	elseif RAND(100) < 40 //What this does is choose a random number from 1-100, and then checks if that number is less than 40. If it's less than forty, then these dialogue pieces will occur. Remember, you can have multiple lines of dialogue within one set of brackets like this! You just need to make sure they're all enclosed in their own set of quotation marks.
 		{
-		"\0\s[0]This is one of the random boot conversations.\w8\1\s[10]The random number drawn was less than forty.\e"
+		"\0\s[0]This is one of the random boot conversations.\w8\0\s[0]The random number drawn was less than forty.\e"
 
-		"\1\s[10]This is another one of the random boot conversations.\w8\0\s[0]The random number was again less than forty.\e"
+		"\0\s[0]This is another one of the random boot conversations.\w8\0\s[0]The random number was again less than forty.\e"
 
-		"\0\s[0]This is the third random boot conversation.\w8\1\s[10]The random number was less than forty.\e"
+		"\0\s[0]This is the third random boot conversation.\w8\0\s[0]The random number was less than forty.\e"
 		}
  	else
  	{
@@ -288,47 +288,47 @@ normalboottalk
 
 		if timeslot == "earlymorning" //The following dialogue will be called if they are booted during the time specified in GetTimeSlot (in this case, the hour being more than/equal to 5 but less than/equal to 8). Remember, you can add as many lines of dialogue here as you want, or take away as many as you want! Replace the dialogue here with what you see fit.
 		{
-		"\0\s[0]This is an early morning boot dialogue.\w8\1\s[10]Between the hours of five and eight.\e"
+		"\0\s[0]This is an early morning boot dialogue.\w8\0\s[0]Between the hours of five and eight.\e"
 
-		"\1\s[10]This is another early morning boot dialogue.\w8\0\s[0]Again, between the hours of five and eight.\e"
+		"\0\s[0]This is another early morning boot dialogue.\w8\0\s[0]Again, between the hours of five and eight.\e"
 
-		"\1\s[10]This is the third early morning boot dialogue.\w8\0\s[0]Between the hours of five and eight.\e"
+		"\0\s[0]This is the third early morning boot dialogue.\w8\0\s[0]Between the hours of five and eight.\e"
 		}
 		elseif timeslot == "morning"
 		{
 		"\0\s[0]This is a morning boot dialogue.\e"
 
-		"\1\s[10]This is another morning boot dialogue.\w8\0\s[0]Yup.\e"
+		"\0\s[0]This is another morning boot dialogue.\w8\0\s[0]Yup.\e"
 		}
 		elseif timeslot == "lunch"
 		{
-		"\0\s[0]This is a lunch boot dialogue.\1\s[10]Sure is.\e"
+		"\0\s[0]This is a lunch boot dialogue.\0\s[0]Sure is.\e"
 
-		"\1\s[10]This is another lunch boot dialogue.\e"
+		"\0\s[0]This is another lunch boot dialogue.\e"
 		}
 		elseif timeslot == "afternoon"
 		{
-		"\1\s[10]This is an afternoon boot dialogue.\w8\0\s[0]That it is.\e"
+		"\0\s[0]This is an afternoon boot dialogue.\w8\0\s[0]That it is.\e"
 		}
 		elseif timeslot == "evening"
 		{
- 		"\0\s[0]This is an evening boot dialogue.\1\s[10]Between the hours of 18 and 20.\e"
+ 		"\0\s[0]This is an evening boot dialogue.\0\s[0]Between the hours of 18 and 20.\e"
 		}
 		elseif timeslot == "latenight"
 		{
- 		"\0\s[0]This is a late night boot dialogue.\1\w8\s[10]Between 21 and 24.\e"
+ 		"\0\s[0]This is a late night boot dialogue.\0\w8\s[0]Between 21 and 24.\e"
 
- 		"\0\s[0]This is another late night boot dialogue.\1\w8\s[10]That it is.\e"
+ 		"\0\s[0]This is another late night boot dialogue.\0\w8\s[0]That it is.\e"
 
- 		"\1\s[10]This is the third late night boot dialogue.\w8\0\s[0]Between 21 and 24.\e"
+ 		"\0\s[0]This is the third late night boot dialogue.\w8\0\s[0]Between 21 and 24.\e"
 		}
 		else //the last timeslot we haven't done is midnight, which is what's under here.
 		{
-		"\0\s[0]This is a middle of the night boot dialogue.\1\w8\s[10]From midnight to five.\e"
+		"\0\s[0]This is a middle of the night boot dialogue.\0\w8\s[0]From midnight to five.\e"
 
- 		"\0\s[0]This is another middle of the night boot dialogue.\1\w8\s[10]That it is.\e"
+ 		"\0\s[0]This is another middle of the night boot dialogue.\0\w8\s[0]That it is.\e"
 
- 		"\1\s[10]This is the third middle of the night boot dialogue.\w8\0\s[0]Very late at night.\e"
+ 		"\0\s[0]This is the third middle of the night boot dialogue.\w8\0\s[0]Very late at night.\e"
 		}
 	}
 }
@@ -353,15 +353,15 @@ OnClose
 		{
 			if RAND(100) < 40 //see above about the random number generator
 			{
-				"\0\s[0]This is a random close dialogue.\w8\1\s[10]The random number generator chose something below 40.\w8\w8"
+				"\0\s[0]This is a random close dialogue.\w8\0\s[0]The random number generator chose something below 40.\w8\w8"
 			}
 			else
 			{
 			if timeslot == "earlymorning"
 				{
-					"\1\s[10]This is an early morning close dialogue.\w8\0\s[0]From 5 to 8.\w8"
+					"\0\s[0]This is an early morning close dialogue.\w8\0\s[0]From 5 to 8.\w8"
 
-					"\0\s[0]This is another early morning close dialogue.\w8\1\s[10]Yup.\w8\w8"
+					"\0\s[0]This is another early morning close dialogue.\w8\0\s[0]Yup.\w8\w8"
 				}
 			elseif timeslot == "morning"
  				{
@@ -369,27 +369,27 @@ OnClose
  				}
  			elseif timeslot == "lunch"
  				{
- 					"\0\s[0]This is a lunch close dialogue.\w8\1\s[10]Yup.\w8"
+ 					"\0\s[0]This is a lunch close dialogue.\w8\0\s[0]Yup.\w8"
 
- 					"\0\s[0]This is another lunch close dialogue.\w8\1\s[10]In the middle of the day.\w8"
+ 					"\0\s[0]This is another lunch close dialogue.\w8\0\s[0]In the middle of the day.\w8"
  				}
  			elseif timeslot == "afternoon"
  				{
- 					"\0\s[0]This is an afternoon close dialogue.\w8\1\s[10]Done.\w8"
+ 					"\0\s[0]This is an afternoon close dialogue.\w8\0\s[0]Done.\w8"
 
- 					"\1\s[10]This is another afternoon close dialogue.\w8\0\s[0]Yup.\w8"
+ 					"\0\s[0]This is another afternoon close dialogue.\w8\0\s[0]Yup.\w8"
  				}
   			elseif timeslot == "evening"
  				{
  						if weekday == 6 //here, a nested if statement is checking that if it's evening, is it also saturday? You can do this to check more specific times on other days as well. You can change this to some other day if you want, or just delete this little if/else section entirely and write your own evening related close dialogue.
  						{
- 							"\0\s[0]This is a Saturday evening close dialogue.\w8\1\s[10]Somewhat specific.\w8"
+ 							"\0\s[0]This is a Saturday evening close dialogue.\w8\0\s[0]Somewhat specific.\w8"
  						}
  						else //if it's not saturday, then it'll do this dialogue instead.
  						{
- 							"\0\s[0]This is an evening close dialogue.\w8\1\s[10]Bye.\w8"
+ 							"\0\s[0]This is an evening close dialogue.\w8\0\s[0]Bye.\w8"
 
- 							"\1\s[10]This is another evening close dialogue.\w8\0\s[0]Yup.\w8"
+ 							"\0\s[0]This is another evening close dialogue.\w8\0\s[0]Yup.\w8"
  						}
  				}
 			elseif timeslot == "latenight"
@@ -399,24 +399,24 @@ OnClose
  						{
  							"\0\s[0]This is a late Saturday night close dialogue.\w8"
 
- 							"\1\s[10]This is another late Saturday night close dialogue.\w8\0\s[0]Yup.\w8"
+ 							"\0\s[0]This is another late Saturday night close dialogue.\w8\0\s[0]Yup.\w8"
  						}
 
- 						"\1\s[10]This is a late night close dialogue.\w8\0\s[0]That it is.\w8"
+ 						"\0\s[0]This is a late night close dialogue.\w8\0\s[0]That it is.\w8"
 
-						"\0\s[0]This is another late night close dialogue.\w8\1\s[10]Done.\w8"
+						"\0\s[0]This is another late night close dialogue.\w8\0\s[0]Done.\w8"
  				}
 			else //like above, this is the midnight time slot since it's the last one left.
  				{
  						if weekday == 0 //checking if it's the middle of the night on Sunday
  						{
- 							"\1\s[10]This is a middle of the night Sunday close dialogue.\w8\0\s[0]From midnight to five AM on Sunday.\w8"
+ 							"\0\s[0]This is a middle of the night Sunday close dialogue.\w8\0\s[0]From midnight to five AM on Sunday.\w8"
  						}
-						"\0\s[0]This is a middle of the night close dialogue.\w8\1\s[10]Very late at night.\w8"
+						"\0\s[0]This is a middle of the night close dialogue.\w8\0\s[0]Very late at night.\w8"
 
-						"\1\s[10]This is another middle of the night close dialogue.\w8"
+						"\0\s[0]This is another middle of the night close dialogue.\w8"
 
-						"\1\s[10]This is the third middle of the night close dialogue.\w8\0\s[0]So it is.\w8"
+						"\0\s[0]This is the third middle of the night close dialogue.\w8\0\s[0]So it is.\w8"
 				}
 			}
 
@@ -427,7 +427,7 @@ OnClose
  	{
  		"\0\s[0]This dialogue is for closing us before five minutes have passed.\w8\w8"
 
- 		"\1\s[10]This is another bit of dialogue for closing us before five minutes have passed.\w8\0\s[0]Quickly done.\w8\w8"
+ 		"\0\s[0]This is another bit of dialogue for closing us before five minutes have passed.\w8\0\s[0]Quickly done.\w8\w8"
  	}
  	--
 	"\-\e" //this bit of code actually closes and ends the ghost. Because \e is here, you don't have to end each line above with it. Again, this will come up very rarely, so OnClose is an unusual case.
@@ -444,7 +444,7 @@ OnClose
 
 OnWindowStateRestore
  {
-	"\0\s[0]This dialogue means we were minimized.\w8\1\s[10]Then brought back up.\e"
+	"\0\s[0]This dialogue means we were minimized.\w8\0\s[0]Then brought back up.\e"
 }
 
 
@@ -462,7 +462,7 @@ OnGhostChanging
 	}
  	else //If you're switching to another Ghost.
 	{
-		"\0\s[0]This dialogue means we are switching to %(reference0).\w8\1\s[10]Bye.\w8\w8\e"
+		"\0\s[0]This dialogue means we are switching to %(reference0).\w8\0\s[0]Bye.\w8\w8\e"
 
 		//Replace this dialogue with whatever you like. Notice the use of the %(reference0) envelope here? In OnGhostChanging, %(reference0) stores the name of the ghost being swapped to, so if you want to display what you're switching to, you can use %(reference0) as in this example. You don't have to use %(reference0) if you don't want to though.
 	}
@@ -475,15 +475,15 @@ OnGhostChanging
 
 OnGhostChanged
 {
-	"\0\s[0]\1\s[10]" //this sets up their default poses
+	"\0\s[0]\0\s[0]" //this sets up their default poses
 	--
 	if reference0 == "K9" //As above, this should be the name of your ghost as in install.txt or descript.txt.
 	{
-		"\0\s[0]We have reloaded ourselves.\1\w8\s[10]Sure have.\e"
+		"\0\s[0]We have reloaded ourselves.\0\w8\s[0]Sure have.\e"
 	}
 	else //If you're switching to them from another ghost...
 	{
-		"\1\s[10]Goodbye, %(reference0).\w8\0\s[0]Someone switched from you to us.\e"
+		"\0\s[0]Goodbye, %(reference0).\w8\0\s[0]Someone switched from you to us.\e"
 
 		//Again, %(reference0) in this function is the name of the ghost in question. As above, replace these two lines of dialogue what what'd be appropriate for your ghost.
 	}
@@ -498,14 +498,14 @@ OnShellChanging
  {
 	if reference0 == "Hypothetical Shell that doesn't actually exist" //reference0 in OnShellChanging is the name of the shell you're swapping to. It should be defined in the descript.txt file in your shell folder. If you do have alternate shells, put in the right name here.
 	{
-	"\1\s[10]This dialogue is specifically for changing to this particular shell.\w8\0\w8\s[9]It totally exists.\w8\e"
+	"\0\s[0]This dialogue is specifically for changing to this particular shell.\w8\0\w8\s[9]It totally exists.\w8\e"
 	//Then rewrite this line as appropriate.
 	}
 	else //if you don't have any specific dialogue for a specific shell
 	{
-	"\0\s[0]This dialogue is for changing shells.\w8\1\s[10]Sure is.\w8\e"
+	"\0\s[0]This dialogue is for changing shells.\w8\0\s[0]Sure is.\w8\e"
 
-	"\1\s[10]This is another bit of dialogue for changing shells.\w8\0\s[8]I wonder how many people will actually have multiple shells?\e"
+	"\0\s[0]This is another bit of dialogue for changing shells.\w8\0\s[8]I wonder how many people will actually have multiple shells?\e"
 
 	//Rewrite these two lines as you need.
 	}
@@ -522,7 +522,7 @@ OnShellChanged
  	{
  		nowshell = "default_shell" //This is the folder name for your shell. Not the same as the above!
 
- 		"\0\s[0]This dialogue is for switching to our default shell.\w8\1\s[18]No really, will anyone actually put in the work to use these functions?\w8\0\s[9]\n\n[half]Shh.\e"
+ 		"\0\s[0]This dialogue is for switching to our default shell.\w8\0\s[18]No really, will anyone actually put in the work to use these functions?\w8\0\s[9]\n\n[half]Shh.\e"
 		//Replace dialogue as required.
  	}
  	elseif reference0 == "Hypothetical Shell that doesn't actually exist" //You can use as many elseifs for as many shells as you've got.
@@ -531,19 +531,19 @@ OnShellChanged
 
  		"\0\s[0]This dialogue is for switching to that hypothetical shell.\e"
 
- 		"\0\s[0]This is another bit of dialogue for switching to this hypothetical shell.\w8\1\s[18]Man if you actually use this, you should tell Zar, it'll blow her mind.\w8\0\n\n[half]\s[9]Shut up, we're not supposed to be in-character here.\e"
+ 		"\0\s[0]This is another bit of dialogue for switching to this hypothetical shell.\w8\0\s[18]Man if you actually use this, you should tell Zar, it'll blow her mind.\w8\0\n\n[half]\s[9]Shut up, we're not supposed to be in-character here.\e"
 		//Replace these bits with whatever you have in mind.
  	}
  	elseif reference0 == "Another totally real shell wow"
  	{
  		nowshell = "thiswouldbesomuchwork"
 
- 		"\1\s[10]This dialogue is after we've switched to another totally real shell.\e"
+ 		"\0\s[0]This dialogue is after we've switched to another totally real shell.\e"
 		//Replace this as well.
  	}
  	else //For any shell without a specific name, or if you don't want to bother with individual responses to a shell.
  	{
-	"\0\s[0]This dialogue is after we've changed our shell to %(reference[0]).\w8\1\s[18]How many shells you got?\e"
+	"\0\s[0]This dialogue is after we've changed our shell to %(reference[0]).\w8\0\s[18]How many shells you got?\e"
 
 	//Note the %(reference[0]) here! This time that should store the name of whatever shell you're switching to. To be honest, I have not experimented with this too much because making shells is a pain in the tuckus, but I'm going to take cindysuke's coding on faith and assume reference[0] is correct instead of reference0. Replace this bit of dialogue as you need.
 	}
@@ -563,7 +563,7 @@ if reference0 == 0 //in OnDressupChanged, reference0 refers to the character, th
 		{
 			if reference2 == 1 //This checks if you're putting it on.
 			{
-			"\0\s[0]You put my clothing item on me.\w8\1\s[19]lol like zar would ever bother with clothes for a ghost.\w8\0\s[9]\n\n[half]Shut up dude you're going to get us in trouble.\e"
+			"\0\s[0]You put my clothing item on me.\w8\0\s[19]lol like zar would ever bother with clothes for a ghost.\w8\0\s[9]\n\n[half]Shut up dude you're going to get us in trouble.\e"
 			}
 			else // This checks if you're taking it off.
 			{
@@ -577,22 +577,22 @@ else //if reference0 isn't the main character, then it has to be the side charac
 		{
 			if reference2 == 1 //If you put it on
 			{
-			"\1\s[10]I'm wearing some kind of clothing.\w8\0\s[8]Maybe a hat?\e"
+			"\0\s[0]I'm wearing some kind of clothing.\w8\0\s[8]Maybe a hat?\e"
 			}
 			else //When you take it off.
 			{
-			"\1\s[10]You took off some kind of clothing.\e"
+			"\0\s[0]You took off some kind of clothing.\e"
 			}
 		}
 	elseif reference1 == "i'm gonna say a propeller beanie" //As you've seen above, you can use elseifs to expand the list if you have more than one item.
 		{
 			if reference2 == 1 //if you're putting it on
 			{
-			"\1\s[10]You put a hat on me.\w8\0\s[6]lol.\w8\1\n\n[half]\s[11]Shaddap.\e"
+			"\0\s[0]You put a hat on me.\w8\0\s[6]lol.\w8\0\n\n[half]\s[11]Shaddap.\e"
 			}
 			else //when you take it off
 			{
-			"\1\s[10]You took off the hat.\e"
+			"\0\s[0]You took off the hat.\e"
 			}
 		}
 	}

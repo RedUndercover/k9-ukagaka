@@ -455,7 +455,7 @@ SHIORI3FW.MakeEmptyResponse
 	when "OnFirstBoot", "OnBoot", "OnWindowStateRestore", "OnGhostChanged"
 		// 긚긓?긵0/1궻딈?긖?긲귻긚귩뢯궥뷠뾴궕궇귡귽긹깛긣
 		"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/
-			Value: \0\s[0]\1\s[10]\e%(C_CRLF2)"
+			Value: \0\s[0]\0\s[0]\e%(C_CRLF2)"
 	when "OnClose"
 		// 뢎뿹럚렑귩뢯궥뷠뾴궕궇귡귽긹깛긣
 		"SHIORI/3.0 200 OK%(C_CRLF)Sender: AYA%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)/

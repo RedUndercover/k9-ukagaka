@@ -53,7 +53,7 @@ OnAnchorSelect
 			}
 			when "anchor3" //if the link is this value
 			{
-				"\1\s[10]This dialogue is for when Anchor 3 is clicked.\e"
+				"\0\s[0]This dialogue is for when Anchor 3 is clicked.\e"
 			}
 		}
 	}

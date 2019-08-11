@@ -29,8 +29,8 @@ ReplyToGhost
 {
  	res_reference0 = reference0
 	{
-	"\0\s[0]You said %(res_reference0).\w8\1\s[10]Odd thing to say.\e"
+	"\0\s[0]You said %(res_reference0).\w8\0\s[0]Odd thing to say.\e"
 	
-	"\1\s[10]Hey, %(res_reference0).\e"
+	"\0\s[0]Hey, %(res_reference0).\e"
 	}
 }

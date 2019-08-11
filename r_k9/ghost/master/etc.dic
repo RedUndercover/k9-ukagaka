@@ -144,46 +144,46 @@ OnInstallRefuse
 //--OnVanishSelecting
 //When you select the uninstall option in the menu.
 
-OnVanishSelecting
-{
-	"\0\s[0]%(username), please be careful in deciding whether or not to uninstall me.\e"
-}
+	OnVanishSelecting
+	{
+		"\0\s[0]%(username), please be careful in deciding whether or not to uninstall me.\e"
+	}
 
 //OnVanishSelected
 //When you decide to uninstall them.
 
-OnVanishSelected
-{
-	"\0\s[0]You have elected to uninstall me.\w4\0\s[0] Goodbye, %(username).\w9\w9\e"
-}
+	OnVanishSelected
+	{
+		"\0\s[0]You have elected to uninstall me.\w4\0\s[0] Goodbye, %(username).\w9\w9\e"
+	}
 
 
 //--OnVanishCancel
 //If you select Uninstall from the menu, but decide not to do it.
 
-OnVanishCancel
-{
-	"\0\s[0]You have decided not to uninstall me.\w4 Thank you, %(usrTitle).\e"
-}
+	OnVanishCancel
+	{
+		"\0\s[0]You have decided not to uninstall me.\w4 Thank you, %(usrTitle).\e"
+	}
 
 //--TalkVanishButtonHold
 //I believe this calls if you click and hold the button on either the menu option for uninstalling them, or possibly the option itself. Be careful if you're trying to test this! You'd hate to uninstall all your hard work, right? I'd probably just make sure the dialogue looks right via Script Input and leave it at that.
 
-TalkVanishButtonHold //"Dew it Anakin. Just dew it!"
-{
-	"\0\s[0]Release the button to uninstall me.\w4 You have made it clear enough that my performance has been unsatisfactory.\e"
-}
+	TalkVanishButtonHold //"Dew it Anakin. Just dew it!"
+	{
+		"\0\s[0]Release the button to uninstall me.\w4 You have made it clear enough that my performance has been unsatisfactory.\e"
+	}
 
 
  //---- OnVanished -----------------------------------------
  //OnVanished is a weird little function. Basically, if you uninstall a ghost, it'll automatically go back to the last ghost you were using. They'll then say this line of dialogue about the ghost you just uninstalled. This is very annoying to test as you can imagine! But unlikely to come up super often, I bet. You might as well be thorough and fill this out as well. Make sure to set up both their poses immediately so they both appear when it switches back to them.
 
-OnVanished
- {
-	"\0\s[0]%(reference0) has been uninstalled.\e"
+	OnVanished
+	 {
+		"\0\s[0]%(reference0) has been uninstalled.\e"
 
-	//reference0 here is the name of the other ghost.
-}
+		//reference0 here is the name of the other ghost.
+	}
 
 
 //**** Mail Checking *******************************************************************
@@ -201,69 +201,69 @@ OnVanished
  //---- OnBIFFBegin ---------------------------------------------------------------
  //When you first tell the ghost to check your email. An intro statement, if you will. Replace with whatever you like.
 
-OnBIFFBegin
- {
-	"\0\s[0]Here is your email, %(usrTitle)\e"
+	OnBIFFBegin
+	 {
+		"\0\s[0]Here is your email, %(usrTitle)\e"
 
-	"\0\s[0]%(usrTitle), here is your inbox.\e"
- }
+		"\0\s[0]%(usrTitle), here is your inbox.\e"
+	 }
 
 
  //---- OnBIFFComplete ---------------------------------------------------------------
  //After they've succeeded in checking your mail, they'll report back with how many new emails you have. Replace the dialogue with whatever would be character appropriate.
 
-OnBIFFComplete
- {
-	if reference0 == 0 //If you have no new mail.
- 	{
- 		"\0\s[0]There is no new mail.\e"
-		"\0\s[0]%(usrTitle), you have no new messages."
+	OnBIFFComplete
+	 {
+		if reference0 == 0 //If you have no new mail.
+	 	{
+	 		"\0\s[0]There is no new mail.\e"
+			"\0\s[0]%(usrTitle), you have no new messages."
+		}
+		elseif reference0 == 1 //If you have one new email.
+	 	{
+	 		"\0\s[0]There is one new email.\e"
+		}
+		elseif reference0 > 1 && reference0 < 11 //If you have more than one email but less than eleven.
+		{
+			"\0\s[0]There are %(reference0) unread emails.\e"
+			//reference0 here stores the amount of new email it finds.
+		}
+		elseif reference0 > 100 //If there are over one hundred new emails.
+		{
+			"\0\s[0]There are %(reference0) emails.\e"
+		}
+	 	else //For any other number of emails.
+		{
+			"\0\s[0]There are %(reference0) emails.\e"
+	 	}
 	}
-	elseif reference0 == 1 //If you have one new email.
- 	{
- 		"\0\s[0]There is one new email.\e"
-	}
-	elseif reference0 > 1 && reference0 < 11 //If you have more than one email but less than eleven.
-	{
-		"\0\s[0]There are %(reference0) unread emails.\e"
-		//reference0 here stores the amount of new email it finds.
-	}
-	elseif reference0 > 100 //If there are over one hundred new emails.
-	{
-		"\0\s[0]There are %(reference0) emails.\e"
-	}
- 	else //For any other number of emails.
-	{
-		"\0\s[0]There are %(reference0) emails.\e"
- 	}
-}
 
  //---- OnBIFFFailure ---------------------------------------------------------------
  //Various error messages that can happen when your ghost tries to connect to an email account. Replace the dialogue as appropriate.
 
-OnBIFFFailure
- {
-	if reference0 == "timeout" //If the connection times out.
- 	{
- 		"\0\s[0]The connection has timed out.\e"
-	}
- 	elseif reference0 == "kick" //If the account blocks the ghost from accessing it. I think gmail may do this at first to try and protect your account from unapproved applications using it. It gives you the option to change the setting in the warning email they send you about it.
-	{
-		"\0\s[0]I cannot access your account, %(usrTitle).\e"
- 	}
-	elseif reference0 == "defect" //If the information put into the POP menu is wrong.
- 	{
- 		"\0\s[0]The email account was not set up properly.\w4 It can be reset at the POP menu.\![open,configurationdialog]\e"
+	OnBIFFFailure
+	 {
+		if reference0 == "timeout" //If the connection times out.
+	 	{
+	 		"\0\s[0]The connection has timed out.\e"
+		}
+	 	elseif reference0 == "kick" //If the account blocks the ghost from accessing it. I think gmail may do this at first to try and protect your account from unapproved applications using it. It gives you the option to change the setting in the warning email they send you about it.
+		{
+			"\0\s[0]I cannot access your account, %(usrTitle).\e"
+	 	}
+		elseif reference0 == "defect" //If the information put into the POP menu is wrong.
+	 	{
+	 		"\0\s[0]The email account was not set up properly.\w4 It can be reset at the POP menu.\![open,configurationdialog]\e"
 
-		//Note that this ends with \![open,configurationdialog]. This will open up the preferences menu I described above automatically. More on \! functions in the walkthrough. You can delete the \! tag here if you want to.
-	}
- 	else //if there's some other kind of error.
-	{
-		"\0\s[0]We can't connect to the account.\w4\0\s[0] The error returned is '%(reference[0])'.\e"
+			//Note that this ends with \![open,configurationdialog]. This will open up the preferences menu I described above automatically. More on \! functions in the walkthrough. You can delete the \! tag here if you want to.
+		}
+	 	else //if there's some other kind of error.
+		{
+			"\0\s[0]We can't connect to the account.\w4\0\s[0] The error returned is '%(reference[0])'.\e"
 
-		//reference0 here stores the error message the email server would have given the ghost, hopefully.
- 	}
-}
+			//reference0 here stores the error message the email server would have given the ghost, hopefully.
+	 	}
+	}
 
 
  //**** Network Update *****************************************************************
@@ -275,104 +275,104 @@ OnBIFFFailure
  //---- OnUpdateBegin -------------------------------------------------------------
  //When you first tell your ghost to update. An introductory statement, like OnBIFFBegin above. Replace or add more dialogue as appropriate. Note that they end with \w8 to give a little breather time.
 
-OnUpdateBegin
- {
-	"\0\s[0]Starting the update process.\w8\e"
+	OnUpdateBegin
+	 {
+		"\0\s[0]Starting the update process.\w8\e"
 
-	"\0\s[0]Another message for starting the update process.\w8\0\s[0]Hope you read the directions properly.\w8\e"
- }
+		"\0\s[0]Another message for starting the update process.\w8\0\s[0]Hope you read the directions properly.\w8\e"
+	 }
 
  //---- OnUpdateReady ---------------------------------------------------------
  //If the ghost finds new files to update with.
 
-OnUpdateReady
- {
-	"\0\s[0]There are %(reference[0]) new files.\w8\e"
+	OnUpdateReady
+	 {
+		"\0\s[0]There are %(reference[0]) new files.\w8\e"
 
-	//reference0 here storing the number of new files. You don't have to use it if you don't want to.
- }
+		//reference0 here storing the number of new files. You don't have to use it if you don't want to.
+	 }
 
 
 //---- OnUpdateComplete -------------------------------------------------------------
 //When the ghost has finished the update process.
 
-OnUpdateComplete
- {
-	if reference0 == "none" //if the ghost had nothing to update with
- 	{
- 		"\0\s[0]There are no new files.\e"
+	OnUpdateComplete
+	 {
+		if reference0 == "none" //if the ghost had nothing to update with
+	 	{
+	 		"\0\s[0]There are no new files.\e"
 
-		"\0\s[0]This is another message about there being no new files to update with.\e"
+			"\0\s[0]%(usrTitle), there are no available updates.\e"
+		}
+	 	else //if the ghost has updated successfully
+		{
+			"\0\s[0]Update successful!\e"
+	 	}
 	}
- 	else //if the ghost has updated successfully
-	{
-		"\0\s[0]Update successful!\e"
- 	}
-}
 
  //---- OnUpdateFailure -------------------------------------------------------------
  //Error messages if the update process fails in some way.
 
-OnUpdateFailure
- {
-	if reference0 == "timeout" //if the connection times out
- 	{
- 		"\0\s[0]The update connection has timed out.\e"
-	}
- 	elseif reference0 == "md5 miss" //This is if the files don't match properly to updates.dau, I think. For example, if a file only partially transferred or somehow got corrupted. This may also come up if you didn't set up the directory and updates.dau properly as outlined on the walkthrough page.
-	{
-		"\0\s[0]The MD5 hash of the files don't match.\e"
- 	}
-	else //for other errors
- 	{
- 		"\0\s[0]The update could not be completed.\w8\0\s[0]The error is '%(reference0)'.\e"
-	}
- }
+	OnUpdateFailure
+	 {
+		if reference0 == "timeout" //if the connection times out
+	 	{
+	 		"\0\s[0]The update connection has timed out.\e"
+		}
+	 	elseif reference0 == "md5 miss" //This is if the files don't match properly to updates.dau, I think. For example, if a file only partially transferred or somehow got corrupted. This may also come up if you didn't set up the directory and updates.dau properly as outlined on the walkthrough page.
+		{
+			"\0\s[0]The MD5 hash of the files don't match.\e"
+	 	}
+		else //for other errors
+	 	{
+	 		"\0\s[0]The update could not be completed. The error is '%(reference0)'.\e"
+		}
+	 }
 
 
  //---- OnUpdate.OnDownloadBegin ------------------------------------------------
  //This dialogue plays when they begin downloading a new file. WARNING: if you have big plans for your ghost and are going to make a lot of new image files for it (like... i do, cough) at some point, you're going to want to make these messages very brief, if you even have them at all. The reason is because the user will see these messages for EVERY individual file that they have to download, and if you have, say, 50 pna files in the queue, they will see this dialogue 50 times. Not only that, but displaying the dialogue takes some time, so it also extends the download process.
  //If you aren't planning on adding a ton of files at any point, or are only intending to update the .dic files which will be at most a handful of files, then you can go ahead and put a short message in here. But if your ghost is going to grow in leaps and bounds as you work on it, try and keep these messages as brief as possible to make the process that much faster for your user.
 
-OnUpdate.OnDownloadBegin
- {
- 	if "aitalk" _in_ reference0 //this is checking to see what kind of files are being downloaded. In this case, it's looking for files called aitalk in the download queue. If you want to have a specialized bit of dialogue for each type of file, you can expand this with elseifs and by replacing aitalk with whatever file you have in mind. Keep in mind my warning above though.
- 	{
- 		"\0\s[0]%(usrTitle), I am downloading a new update for my dialogue.\e"
- 	}
-	elseif "etc" _in_ reference0
-	{
-		"\0\s[0]%(usrTitle), I am downloading an update to gain and fix functions."
-	}
- 	else //for files not specified above
- 	{
-	"\0\s[0]...\e"
-	}
- }
+	OnUpdate.OnDownloadBegin
+	 {
+	 	if "aitalk" _in_ reference0 //this is checking to see what kind of files are being downloaded. In this case, it's looking for files called aitalk in the download queue. If you want to have a specialized bit of dialogue for each type of file, you can expand this with elseifs and by replacing aitalk with whatever file you have in mind. Keep in mind my warning above though.
+	 	{
+	 		"\0\s[0]%(usrTitle), I am downloading a new update for my dialogue.\e"
+	 	}
+		elseif "etc" _in_ reference0
+		{
+			"\0\s[0]%(usrTitle), I am downloading an update to gain and fix functions."
+		}
+	 	else //for files not specified above
+	 	{
+		"\0\s[0]...\e"
+		}
+	 }
 
  //---- OnUpdate.OnMD5CompareBegin ---------------------------------------------------
  //This checks the hash value of the files in the directory and the files listed in updates.dau, I believe. It will do this for every file the user downloads, so I again remind you of my warning above! For every file they download, they will have to go through three sets of unique dialogue, and it can get old fast. Not to mention it slows things down a lot. Again, I would recommend keeping this very brief, if not just replacing it with "..." instead.
 
-OnUpdate.OnMD5CompareBegin
- {
-	"\0\s[0]Checking MD5 file integrity...\e"
- }
+	OnUpdate.OnMD5CompareBegin
+	 {
+		"\0\s[0]Checking MD5 file integrity...\e"
+	 }
 
  //---- OnUpdate.OnMD5CompareComplete --------------------------------------------------
  //After they've checked the MD5 value and it matches. See above about the length of this message.
 
-OnUpdate.OnMD5CompareComplete
- {
-	"\0\s[0]MD5 File integrity intact.\e"
-}
+	OnUpdate.OnMD5CompareComplete
+	 {
+		"\0\s[0]MD5 File integrity intact!\e"
+	}
 
  //---- OnUpdate.OnMD5CompareFailure ---------------------------------------------------
  //If the MD5 values don't match. If you follow my Network Update directions carefully, this shouldn't come up very often, but don't be surprised if you run into it every now and then by forgetting a file here or there.
 
-OnUpdate.OnMD5CompareFailure
- {
-	"\0\s[0]The MD5 values don't match.\w8\e"
- }
+	OnUpdate.OnMD5CompareFailure
+	 {
+		"\0\s[0]The MD5 values don't match.\w8\e"
+	 }
 
 
 
@@ -384,88 +384,88 @@ OnUpdate.OnMD5CompareFailure
  //---- OnHeadlinesenseBegin -----------------------------------------------------------
  //This dialogue comes up when you select something in your RSS feed as an intro, like the other On[Thing]Begin things we've seen so far. Replace as you need.
 
-OnHeadlinesenseBegin
- {
-	"\0\s[0]You've selected %(reference0).\e"
- }
+	OnHeadlinesenseBegin
+	 {
+		"\0\s[0]You've selected %(reference0).\e"
+	 }
 
  //---- OnHeadlinesense.OnFind --------------------------------------------------------
  //This actually displays the feed. My set-up for it is pretty simple but gets the job done, it just has the name of the feed, a line space, then a list of links. You shouldn't have to edit any of these and I probably wouldn't honestly.
 
-OnHeadlinesense.OnFind
-{
-	//----  What page You're on
- 	if reference2 == "First" || reference2 == "First and Last"
+	OnHeadlinesense.OnFind
 	{
- 		//---- First page
-		"\0\b2\s[0]%(reference0):"
- 	}
-	elseif reference2 == "Next"
- 	{
-		//---- Second page
- 		"\0\b2\s[0]%(reference0):"
+		//----  What page You're on
+	 	if reference2 == "First" || reference2 == "First and Last"
+		{
+	 		//---- First page
+			"\0\b2\s[0]%(reference0):"
+	 	}
+		elseif reference2 == "Next"
+	 	{
+			//---- Second page
+	 		"\0\b2\s[0]%(reference0):"
+		}
+	 	elseif reference2 == "Last"
+		{
+	 		//---- Last page
+			"\0\b2\s[0]%(reference0):"
+	 	}
+		--
+	 	//---- Headlines
+		"\n\n%reference3\n"
+	 	--
+		//---- Pages
+	 	if reference2 == "First" || reference2 == "Next"
+		{
+	 		//---- Bottom buttons
+			"\![*]\q[Next,] - \![*]\q[Stop,Headline_Cancel]\e"
+	 	}
+		else
+	 	{
+			//---- Bottom buttons
+	 		"\![*]\q[Stop,Headline_Cancel]\e"
+	 	}
+
 	}
- 	elseif reference2 == "Last"
+
+
+	Select.Headline_Cancel
 	{
- 		//---- Last page
-		"\0\b2\s[0]%(reference0):"
- 	}
-	--
- 	//---- Headlines
-	"\n\n%reference3\n"
- 	--
-	//---- Pages
- 	if reference2 == "First" || reference2 == "Next"
-	{
- 		//---- Bottom buttons
-		"\![*]\q[Next,] - \![*]\q[Stop,Headline_Cancel]\e"
- 	}
-	else
- 	{
-		//---- Bottom buttons
- 		"\![*]\q[Stop,Headline_Cancel]\e"
- 	}
-
-}
-
-
-Select.Headline_Cancel
-{
-	"\0\s[0]Headline viewing complete.\e"
-	//Actually I take that back, you can change this line of dialogue here for when you're done looking at a headline to something else if you want.
-}
+		"\0\s[0]Headline viewing complete.\e"
+		//Actually I take that back, you can change this line of dialogue here for when you're done looking at a headline to something else if you want.
+	}
 
  //---- OnHeadlinesenseComplete -------------------------------------------------------
  //This is an odd function. As far as I can gather, this is if the headline information gathering was successful, but there's no new information to report. Possibly if none of the feeds have updated? I'm a little fuzzy on this one.
 
-OnHeadlinesenseComplete
- {
-	"\0\s[0]No update. %(reference0).\e"
-	//reference0 here supposedly always stores the value no update? Again this isn't hugely clear from what I can see. Anyway, this dialogue has never come up for me while using a ghost, so perhaps someone else who runs into it can offer more clarity. For now, you can leave it as is, or write up something else in here if you like.
- }
+	OnHeadlinesenseComplete
+	 {
+		"\0\s[0]No update. %(reference0).\e"
+		//reference0 here supposedly always stores the value no update? Again this isn't hugely clear from what I can see. Anyway, this dialogue has never come up for me while using a ghost, so perhaps someone else who runs into it can offer more clarity. For now, you can leave it as is, or write up something else in here if you like.
+	 }
 
  //---- OnHeadlinesenseFailure ---------------------------------------------------------
  //This one is more clearly for when the ghost can't get the information it needs about the RSS feed in question.
 
-OnHeadlinesenseFailure
-  {
-	"\0\s[0]%(usrTitle), The feed cannot be updated.\n\n[half]" //This sets up an exchange between the two characters. The final part of the exchange continues below in the if statements.
- 	--
-	if reference0 == "can't download" //if they can't download the rss feed for some reason
- 	{
-		"I am unable to download it. \n[half] Check the RSS URL in the menu."
- 	}
-	elseif reference0 == "can't analyze" //if they can't read the file for some reason
- 	{
-		"It is unable to be analyzed."
- 	}
-	else //other errors
- 	{
-		"An undefined error is preventing it's display."
- 	}
-	--
- 	"\e" //And here is the final /e, so you don't need to include it in the if statements above. Another one of the very rare cases this occurs.
-}
+	OnHeadlinesenseFailure
+	  {
+		"\0\s[0]%(usrTitle), The feed cannot be updated.\n\n[half]" //This sets up an exchange between the two characters. The final part of the exchange continues below in the if statements.
+	 	--
+		if reference0 == "can't download" //if they can't download the rss feed for some reason
+	 	{
+			"I am unable to download it. \n[half] Check the RSS URL in the menu."
+	 	}
+		elseif reference0 == "can't analyze" //if they can't read the file for some reason
+	 	{
+			"It is unable to be analyzed."
+	 	}
+		else //other errors
+	 	{
+			"An undefined error is preventing it's display."
+	 	}
+		--
+	 	"\e" //And here is the final /e, so you don't need to include it in the if statements above. Another one of the very rare cases this occurs.
+	}
 
 
 //**** Ghost Creation and Updating ******************************************************
@@ -476,35 +476,35 @@ OnHeadlinesenseFailure
  //---- OnUpdatedataCreating -----------------------------------------------------------
  //This will begin the creation of the updates2.dau file. Not unlike the other beginning functions you've seen throughout this file. Replace with whatever you like.
 
-OnUpdatedataCreating
- {
-	"\0\s[0]Creating the updates2.dau file.\e"
- }
+	OnUpdatedataCreating
+	 {
+		"\0\s[0]Creating the updates2.dau file.\e"
+	 }
 
  //---- OnUpdatedataCreated -------------------------------------------------------------
  //After the updates2.dau file has been successfully created. Replace with whatever.
 
-OnUpdatedataCreated
- {
-	"\0\s[0]Successfully created updates2.dau.\e"
- }
+	OnUpdatedataCreated
+	 {
+		"\0\s[0]Successfully created updates2.dau.\e"
+	 }
 
  //---- OnNarCreating ------------------------------------------------------------------
  //Along the same lines, this is when they begin creating a .nar file for your ghost. .nars are the format most ghosts will be in, something similar to a .zip file, and this is the format you'll be distributing your ghost in most likely. Replace the dialogue with whatever you like.
 
-OnNarCreating
- {
-	"\0\s[0]Creating the .nar file.\e"
- }
+	OnNarCreating
+	 {
+		"\0\s[0]Creating the .nar file.\e"
+	 }
 
  //---- OnNarCreated -------------------------------------------------------------------
  //After the nar file has been successfully created.
 
-OnNarCreated
- {
-	"\0\s[0]Successfully created '%(reference0)'.\e"
-	//reference0 here will be the filename of the nar you just created. It should drop the nar in the folder where all your ghosts are listed, ssp\ghost\.
- }
+	OnNarCreated
+	 {
+		"\0\s[0]Successfully created '%(reference0)'.\e"
+		//reference0 here will be the filename of the nar you just created. It should drop the nar in the folder where all your ghosts are listed, ssp\ghost\.
+	 }
 
  //****　Clock Synchronization　**********************************************************
 //**** 미카 (http://homepage2.nifty.com/ko-ki/)의 사전을 참고했습니다．감사＞こ 나무 성
@@ -515,133 +515,133 @@ OnNarCreated
  //----OnSNTPBegin ------------------------------------------------------------------
  //As with the others you've seen above, this is the beginning bit of dialogue for this process.
 
-OnSNTPBegin
- {
-	"\0\s[0]I shall check the time, %(usrTitle).\w4 Connecting to %(reference0).\e"
-	//%(reference0) here is the site they'll be using to check your clock. I wouldn't worry too much about what the site is or where it's defined, it should be accurate. Replace the dialogue with what you need, you don't have to use reference0 if you don't want to.
- }
+	OnSNTPBegin
+	 {
+		"\0\s[0]I shall check the time, %(usrTitle).\w4 Connecting to %(reference0).\e"
+		//%(reference0) here is the site they'll be using to check your clock. I wouldn't worry too much about what the site is or where it's defined, it should be accurate. Replace the dialogue with what you need, you don't have to use reference0 if you don't want to.
+	 }
 
 
  //----　OnSNTPCompare----------------------------------------------------------
  //Now the ghost is going to compare the current time of your computer's system to the time of the site they connected to. Most of this you don't have to touch, just replace the dialogue as indicated.
 
-OnSNTPCompare
- {
- 	"Retrieved Time: %reference1[1]/%reference1[2]/%reference1[0] %reference1[3]:%reference1[4]:%reference1[5]\w2\n/
-	Your Time: %reference2[1]/%reference2[2]/%reference2[0] %reference2[3]:%reference2[4]:%reference2[5]\w2\n/
- 	\n"
-	--
- 	if reference3 == 0 //if your clock is already accurate.
-	{
- 		"\0\s[0]Your clock is accurate.\e" //replace this with whatever message you like.
-	}
- 	else //if your clock doesn't match
-	{
-	//you can redo this top line up to the \n\n[half] part, but leave the \q options alone.
- 		"\0\s[0]Your clock does not match the time I reported.\w6\nShould I repair it, %(usrTitle)?\n\n[half]/
-		\![*]\q[Fix it,OnSNTPEXECUTE]\n/
- 		\![*]\q[Leave it alone,OnSNTPCANCEL]\e"
-	}
- }
+	OnSNTPCompare
+	 {
+	 	"Retrieved Time: %reference1[1]/%reference1[2]/%reference1[0] %reference1[3]:%reference1[4]:%reference1[5]\w2\n/
+		Your Time: %reference2[1]/%reference2[2]/%reference2[0] %reference2[3]:%reference2[4]:%reference2[5]\w2\n/
+	 	\n"
+		--
+	 	if reference3 == 0 //if your clock is already accurate.
+		{
+	 		"\0\s[0]Your clock is accurate.\e" //replace this with whatever message you like.
+		}
+	 	else //if your clock doesn't match
+		{
+		//you can redo this top line up to the \n\n[half] part, but leave the \q options alone.
+	 		"\0\s[0]Your clock does not match the time I reported.\w6\nShould I repair it, %(usrTitle)?\n\n[half]/
+			\![*]\q[Fix it,OnSNTPEXECUTE]\n/
+	 		\![*]\q[Leave it alone,OnSNTPCANCEL]\e"
+		}
+	 }
 
  //----　OnSNTPEXECUTE ------------------------------------------------------------------
  //After they've fixed your clock. Replace with what you want.
 
-OnSNTPEXECUTE
- {
-	"\0\s[0]The clock has been fixed.\6\e"
- }
+	OnSNTPEXECUTE
+	 {
+		"\0\s[0]The clock has been fixed.\6\e"
+	 }
 
  //----　OnSNTPCANCEL ------------------------------------------------------------------
  //If you decide not to change your clock when they tell you it doesn't match. Replace with what you want.
 
-OnSNTPCANCEL
- {
-	"\0\s[0]Very well, %(usrTitle).\e"
- }
+	OnSNTPCANCEL
+	 {
+		"\0\s[0]Very well, %(usrTitle).\e"
+	 }
 
  //----　OnSNTPFailure ------------------------------------------------------------------
  //If they can't change the clock for some reason, possibly because the site timed out but it could be anything. Replace with what you want.
 
-OnSNTPFailure
- {
-	"\0\s[0]The clock could not be changed.\w8\0\s[0]There was an error.\e"
- }
+	OnSNTPFailure
+	 {
+		"\0\s[0]The clock could not be changed.\w8\0\s[0]There was an error.\e"
+	 }
 
 
  //--OnDisplayChange----------------------------------------------------------------
  //This is when you change the resolution of your monitor while your ghost is running. Don't mess with any of this, it should be fine as is.
 
-OnDisplayChange
- {
-	displaybpp    = reference0
- 	displaywidth  = reference1
-	displayheight = reference2
- }
+	OnDisplayChange
+	 {
+		displaybpp    = reference0
+	 	displaywidth  = reference1
+		displayheight = reference2
+	 }
 
 
 
  //---- OnScreenSaverStart -------------------------------------------------------
  //This happens if your ghost is running when your screensaver starts up. This and OnScreenSaverEnd are optional, you can delete them both if you like. In fact, you can just delete the rest of the functions from this point on if you're tired and lazy, but we're close to the end, so don't give up yet!
 
-OnScreenSaverStart
- {
-	"\0\s[0]The screensaver is starting.\e"
-	//Replace with what you want.
- }
+	OnScreenSaverStart
+	 {
+		"\0\s[0]The screensaver is starting.\e"
+		//Replace with what you want.
+	 }
 
  //---- OnScreenSaverEnd -------------------------------------------------------
  //When you wiggle your mouse and stop your screensaver.
 
-OnScreenSaverEnd
- {
-	"\0\s[0]The screensaver is gone.\e"
-	//Replace with what you want.
- }
+	OnScreenSaverEnd
+	 {
+		"\0\s[0]The screensaver is gone.\e"
+		//Replace with what you want.
+	 }
 
 
  //---- OnApplicationBoot ---------------------------------------------------------------
  //This supposedly is for when a program starts but I have honestly never gotten it to work or seen it happen. I wouldn't sweat these three related functions too much.
 
-OnApplicationBoot
- {
-	"\0\s[0]%(reference0) has started.\e"
- }
+	OnApplicationBoot
+	 {
+		"\0\s[0]%(reference0) has started.\e"
+	 }
 
  //---- OnApplicationClose --------------------------------------------------------------
  //See above, but for the program closing.
 
-OnApplicationClose
- {
-	"\0\s[0]%(reference0) has closed.\e"
- }
+	OnApplicationClose
+	 {
+		"\0\s[0]%(reference0) has closed.\e"
+	 }
 
  //---- OnApplicationFileOpen ----------------------------------------------------------
  //I believe this is for when the program detailed above opens a document file of some kind.
 
-OnApplicationFileOpen
- {
-	"\0\s[0]Opening %(reference1), %(usrTitle).\e"
- }
+	OnApplicationFileOpen
+	 {
+		"\0\s[0]Opening %(reference1), %(usrTitle).\e"
+	 }
 
 
 
  //---- OnBatteryLow -----------------------------------------------------------------
  //This is for when your laptop's battery is low. I don't have a laptop, so I've never really been able to test this. Perhaps someone with a laptop can report back to me with more details about the battery related functions?
 
-OnBatteryLow
- {
-	"\0\s[0]%(usrTitle), my batteries are nearly exhausted. I have %(reference0) power left.\e"
-	//reference0 here is the amount of battery power. Replace as you like.
- }
+	OnBatteryLow
+	 {
+		"\0\s[0]%(usrTitle), my batteries are nearly exhausted. I have %(reference0) power left.\e"
+		//reference0 here is the amount of battery power. Replace as you like.
+	 }
 
  //--OnBatteryCritical-----------------------------------------------------------------
  //Likewise, this is for if your battery is REALLY low. Replace as you like.
 
-OnBatteryCritical
-{
-	"\0\s[0]Power exhausted.\e"
-}
+	OnBatteryCritical
+	{
+		"\0\s[0]Power exhausted.\e"
+	}
 
 //--OnBatteryNotify--------------------------------------------------------------------
 //This I believe checks to see if your laptop is plugged in or not. Originally this bit of code was commented out, so I suspect it may not work. It may need a plug-in of some sort. Either way, you can delete it or fill it out as you like.
@@ -665,27 +665,27 @@ OnBatteryNotify
  //---- OnSysResourceLow -----------------------------------------------------------
  //A notification for if your system resources are low. I've never seen this happen and my system resources can run pretty low sometimes (woo windows xp woooo), so I suspect this one also may not work without the right plug-in, but I could be wrong. You might as well fill it out.
 
-OnSysResourceLow
- {
-	"\0\s[0]System resources are low.\e"
- }
+	OnSysResourceLow
+	 {
+		"\0\s[0]System resources are low.\e"
+	 }
 
 
  //--OnShellScaling
  //This is a function however that you may actually use! Or at least, I often use it when desktop space is at a premium (which it always is on my computer). If you right click the ghost, you can go to Shell Scaling, which lists a number of different percentages. Those are the percentages your ghost can be scaled in size up or down. You can try them out yourself to get an idea of what I mean. I often scale mine down to get them out of the way sometimes. This adds dialogue whenever you change their scale. You don't have to do this if you don't want to, in which case they will just stay silent when you size them up or down. If that's what you want, just delete the whole thing.
 
-OnShellScaling
-{
-	if reference0 >= 150 //this number is the percentage that you're scaling the ghost up to. In this case, it's 150%.
+	OnShellScaling
 	{
-		"\0\s[0]I am now 150% my original size.\e"
+		if reference0 >= 150 //this number is the percentage that you're scaling the ghost up to. In this case, it's 150%.
+		{
+			"\0\s[0]I am now 150% my original size.\e"
+		}
+		elseif reference0 == 100 //this is 100%
+		{
+			"\0\s[0]I am normal sized.\e"
+		}
+		elseif reference0 == 50 //this is 50%. You can add any percentage that's listed under shell scaling if you want using more elseifs.
+		{
+			"\0\s[0]I am now 50% my original size.\e"
+		}
 	}
-	elseif reference0 == 100 //this is 100%
-	{
-		"\0\s[0]I am normal sized.\e"
-	}
-	elseif reference0 == 50 //this is 50%. You can add any percentage that's listed under shell scaling if you want using more elseifs.
-	{
-		"\0\s[0]I am now 50% my original size.\e"
-	}
-}

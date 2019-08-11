@@ -18,6 +18,7 @@ OpenSakuraMenu
 		"\0\s[0]\b2Greetings."
 		"\0\s[0]\b2Welcome."
 		"\0\s[0]\b2Yeehaw."
+		"\0\s[0]\b2What would you like me to do?"
 		--
 		MenuRun
 }

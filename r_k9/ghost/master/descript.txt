@@ -22,7 +22,7 @@ kero.name,companion
 //This is the information about you, the creator of your ghost! Put in your name or whatever alias you want and whatever website you'd like to link to.
 //You may be wondering why there's both craftman and craftmanw. Well, craftmanw is for non-alphanumeric characters like Japanese, Chinese, Korean, Russian, Arabic, things like that. So if your name is, say, 大嶋啓之, then you'd want to put that in craftmanw. Then you'd put your name in alphanumeric characters in craftman. If you want, you can delete craftmanw if you're not going to use it. Don't delete craftman though.
 
-craftman,oxbowreality
+craftman,OxbowReality
 craftmanurl,http://www.oxbowreality.tumblr.com
 
 

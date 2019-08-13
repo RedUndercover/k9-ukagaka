@@ -573,7 +573,7 @@ OnSecondChange
 
 MikireTalk
  {
-	"\0\s[0]I'm off the screen.\w8\0\s[0]You can push Ctrl-Shift-F12 to bring her back."
+	"\0\s[0]%(usrTitle) I'm off the screen. Press Ctrl-Shift-F12 to bring me back. \e"
 	//Note the hotkey combo Triangle mentions. He's telling the truth, that should bring her back on the screen.
  }
 
@@ -582,7 +582,7 @@ MikireTalk
 
 EndMikireTalk
  {
-	"\0\s[0]I'm no longer off the screen.\w8\0\s[19]What a shame.\w8\0\s[9]\n\n[half]Shut up.\e"
+	"\0\s[0]I'm no longer off the screen.\e"
  }
 
 

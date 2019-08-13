@@ -239,7 +239,7 @@ Select.deleteoff
 Select.TEACHBDAY
 	{
 		dayslot = GetDaySlot //This is setting up in case today is the user's birthday.
-
+		OnMonthInit
 		"\0\s[0]What month were you born? \w8Write the number.\![open,inputbox,OnUserBornMonth,-1]\e"
 
 		//You can replace the dialogue up to the \![open,inputbox,OnUserBornMonth,-1] tag, leave that alone. You'll need the input box to get the information. Note that the month HAS to be put in in number format as well, so you might want to have your ghost mention that.
@@ -274,7 +274,7 @@ OnUserBornMonth
 	}
 
 //This puts the name to the number of the month. No need to mess with these.
-Printmonth
+/* Printmonth
 {
 	if bornmonth == 1
 	{
@@ -324,7 +324,17 @@ Printmonth
 	{
 		"December"
 	}
+} */
+
+//Updated Printmonth using Arrays.
+ Printmonth
+{
+	_arrMonth = TOINT(bornmonth)
+	_monthBorn = monthInfo[_arrMonth][0]
+	"%(_monthBorn)"
 }
+
+
 
 //This adds an appropriate suffix to the number for the day. No need to mess with this either.
 
@@ -351,7 +361,7 @@ Printday
 //--OnUserBornDay
 //This is much like the above function OnUserBornMonth. It'll take the value the user put in for the day and analyze it.
 
-OnUserBornDay
+/* OnUserBornDay
 {
 	tempday = reference0 //storing the input in tempday
 
@@ -409,7 +419,30 @@ OnUserBornDay
 					"\0\s[0]That's not a valid day. Try again.\![open,inputbox,OnUserBornDay,-1]\e"
 				}
 		}
+} */
+
+// test for above w/ 2D Functions
+OnUserBornDay
+{
+	tempday = reference0 //storing the input in tempday
+	_monthDays = TOINT(monthInfo[bornmonth][1])
+	if tempday >=1 && tempday <= _monthDays
+		{
+			bornday = tempday
+		  borndayprint = Printday
+			userbirthday = "%(bornmonth)month %(bornday)day"
+			birthdayprint = "%(bornmonthprint) %(borndayprint)"
+
+			"%(birthchecked)"
+			 }
+	else //if the day isn't valid, like the 10046th or something.
+		{
+			"\0\s[0]That's not a valid day. Try again.\![open,inputbox,OnUserBornDay,-1]\e"
+
+				 //Similar as you can see to the month check above. You can replace the dialogue here up to the tag as you just did, but make sure to leave the input box tag so the user can put in a correct day.
+			 }
 }
+
 
 //--birthchecked
 //This is the new envelope you saw me point out above. As you can see here, you can actually call dialogue in a function with an envelope, even when it has if and else statements like here! Which can be pretty handy. Again, more on envelopes in word.dic. Creative ghostmakers can find handy ways to exploit this, I'm sure.
@@ -418,7 +451,7 @@ birthchecked
 {
 	if userbirthday == dayslot //if today is the user's birthday
 		{
-			"\0\s[0]It's the user's birthday.\w8\0\s[0]Happy birthday, %(username).\e"
+			"\0\s[0] Happy birthday, %(usrTitle).\e"
 			//replace this dialogue with whatever you like
 		}
 	elseif userbirthday == "12month 25day"
@@ -560,7 +593,7 @@ Select.ChoiceGarbagecan
 
 	if _gomicheck == 0 //If the recycle bin is empty.
 	{
-		"\0\s[0]Triangle, go check the recycle bin.\w8\0\s[19]Fine.\w8\w8\s[-1]\w8\w8\w8\w8\w8\0\s[0]\cIt was empty.\e"
+		"\0\s[0]The recycling bin was empty. \e"
 
 		//This isn't the usual flat template dialogue, mostly because I wanted to show that this is a good place to use s[-1], which I covered in the walkthrough file. You can have your ghost disappear momentarily like they're going to check your recycle bin, then come back. \c clears the ghost's balloon of text. Replace dialogue as you desire.
 	}

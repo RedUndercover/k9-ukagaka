@@ -1,0 +1,52 @@
+/*  -----Library-----
+
+This .dic is K9's library file.
+This file stores global variables and user data, alongside auxiliary information that will help K9 work.
+Read through the comments to adjust to your own liking, if you so desire.
+*/
+
+/* ---monthInfo---
+Array containing information associated with the current yearly calendar system of the user.
+Format of the array is as follows:
+  [0][0] = # of months in the year
+  [month name][# of days]
+Adjusted to the Gregorian Calendar but should allow for most any other calendar system.
+*/
+
+OnMonthInit //seperate on-type global function, will replace with a basic init-type.
+{
+  monthInfo = IARRAY
+  monthInfo[0] = "12, 12"
+  monthInfo[1] = "January,31"
+  monthInfo[2] = "February,29"
+  monthInfo[3] = "March,31"
+  monthInfo[4] = "April,30"
+  monthInfo[5] = "May,31"
+  monthInfo[6] = "June,30"
+  monthInfo[7] = "July,31"
+  monthInfo[8] = "August,31"
+  monthInfo[9] = "September,30"
+  monthInfo[10] = "October,31"
+  monthInfo[11] = "November,30"
+  monthInfo[12] = "December,31"
+}
+
+/* Test for future, allowing for easier cutomization using envelopes.
+Needs to be custmized for custom day amounts.
+monthsInit
+{
+  _months {
+    "January,31,February,29,March,31,April,30,May,31,June,30,July,31,August,31,September,30,October,31,November,30,December,31"
+  }
+  _monthNum = 12 //Default for Gregorian-Based calendars
+
+  monthArr = IARRAY
+  monthArr[0] = "%(_monthNum),0"
+
+  for _i = 1; _i <= _monthNum; i++
+  {
+      _daysIndex = _i * 2
+      _nameIndex = _daysIndex - 1
+      monthArr[i] = "%(_nameIndex),%(_daysIndex)"
+  }
+} */

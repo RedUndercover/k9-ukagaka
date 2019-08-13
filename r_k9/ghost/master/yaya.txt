@@ -24,6 +24,7 @@ dic, word.dic
 dic, commu.dic
 dic, nameteach.dic
 dic, anchor.dic
+dic, library.dic
 
 //---- Log Location -------------------------------------------------------------------------
 //I'm not entirely sure what this does, but basically don't touch it.

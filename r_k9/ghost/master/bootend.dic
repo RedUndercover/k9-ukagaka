@@ -51,7 +51,7 @@ OnFirstBoot
 		//You'll also notice that this dialogue is black instead of grey. This is because of the use of the backwards slash as mentioned in the advanced section of the SakuraScripting page. Do you see near the bottom where it has \n\n[half]/ with the other slash at the end before the choices are listed? You will want to replace dialogue up that \n\n[half], but do not mess with the choices beyond that unless you know what you're doing.
 		//Always make sure to keep your dialogue in the quotation marks! And remember, you can't use quotation marks IN dialogue either. You can use two single apostrophes instead if you must. And REMEMBER what I said about \![enter,passivemode]! Do NOT delete that tag!
 
-		"\![enter,passivemode]\0\s[0]\0\s[0]Hello, and welcome to the Girl and Triangle Ghost Template. \w5My name is Girl, and that's Triangle over there.\w8\0\s[0]Sup. \w8\0\s[0]\n\n[half]If you downloaded this template, you are presumably interested in making a ghost. \w5This template has been designed to help you do that. \w5Please make sure to carefully read the included readme file. \w8\0\n\n[half]\s[0]Each of the .dic files you'll be editing has a lot of commentary to guide you.\w8\0\s[0]\n\n[half]In the future, you will be replacing this dialogue with the dialogue for your own ghost. \w5This is a good place to introduce your characters.\w8\0\n\n[half]\s[0]You can have your characters banter with each other and explain how the ghost works and how to access menus.\x\c\0\s[0]More details about dialogue coding will be in the walkthrough page.\w8\0\c\s[0]Now we're going to ask the user the first question about themselves, namely what pronouns they want us to use.\w8\0\s[0]\n\n[half]This will let us construct grammatically correct sentences referring to the user later.\x\w8\0\c\s[0]How should we refer to you, user?\n\n[half]/
+    "\![enter,passivemode]\0\s[0]\0\s[0]Hello, and welcome to the Girl and Triangle Ghost Template. \w5My name is Girl, and that's Triangle over there.\w8\0\s[0]Sup. \w8\0\s[0]\n\n[half]If you downloaded this template, you are presumably interested in making a ghost. \w5This template has been designed to help you do that. \w5Please make sure to carefully read the included readme file. \w8\0\n\n[half]\s[0]Each of the .dic files you'll be editing has a lot of commentary to guide you.\w8\0\s[0]\n\n[half]In the future, you will be replacing this dialogue with the dialogue for your own ghost. \w5This is a good place to introduce your characters.\w8\0\n\n[half]\s[0]You can have your characters banter with each other and explain how the ghost works and how to access menus.\x\c\0\s[0]More details about dialogue coding will be in the walkthrough page.\w8\0\c\s[0]Now we're going to ask the user the first question about themselves, namely what pronouns they want us to use.\w8\0\s[0]\n\n[half]This will let us construct grammatically correct sentences referring to the user later.\x\w8\0\c\s[0]How should we refer to you, user?\n\n[half]/
 		\w5\_q\![*]\q[He/Him/His,choicefirsthehim]\n/
 		\![*]\q[She/Her/Hers,choicefirstsheher]\n/
 		\![*]\q[They/Them/Their,choicefirsttheythem]\e"
@@ -234,7 +234,8 @@ OnBoot
 				//If the user didn't or hasn't put in their birthday yet, this dialogue will basically never get called. Which makes sense.
 	}
 
-	elseif dayslot == "6month 6day" //Like above, this if statement is checking the date. It's looking for the sixth month and the sixth day.
+//Replace w/ k-9 specific days (?)
+	/* elseif dayslot == "6month 6day" //Like above, this if statement is checking the date. It's looking for the sixth month and the sixth day.
 
 	//*********************Advanced User Info*******************************
 	//elseif may be a unique function to AYA, I'm not sure, but anyway, the name itself is pretty self-explanatory. elseif statements always go after an if statement, and essentially are just what they sound like... if this thing happens, do this; else, if this thing happens, do this. elseifs are good if you have multiple things you want to check for in one function, like multiple days of the year as we're doing right now. elseifs go in descending order, so it'll always check if one is true, then if two is true, then if three is true, and so on.
@@ -248,7 +249,7 @@ OnBoot
 				"\0\s[0]It's the fourth of July.\e"
 
 				//You can see how these basically work. You can add in new elseif statements along these same lines with your own dayslots if you want to have them say things for all sorts of days. You can also change these existing ones I put in as examples to other dates, like your character's birthdays, perhaps. This is up to you! If you don't care about this, you can delete all the elseifs and just leave the one for the user's birthday.
-	}
+	} */
 	else
 	{
 		"%(normalboottalk)" //If none of the days above match the current date, the ghost instead will go down to the next function, normalboottalk.
@@ -425,9 +426,9 @@ OnClose
 
  	else //This dialogue is for if they haven't been open for at least five minutes.
  	{
- 		"\0\s[0]This dialogue is for closing us before five minutes have passed.\w8\w8"
+ 		"\0\s[0]This dialogue is for closing us before five minutes have passed."
 
- 		"\0\s[0]This is another bit of dialogue for closing us before five minutes have passed.\w8\0\s[0]Quickly done.\w8\w8"
+ 		"\0\s[0]This is another bit of dialogue for closing us before five minutes have passed. Quickly done."
  	}
  	--
 	"\-\e" //this bit of code actually closes and ends the ghost. Because \e is here, you don't have to end each line above with it. Again, this will come up very rarely, so OnClose is an unusual case.
@@ -444,8 +445,8 @@ OnClose
 
 OnWindowStateRestore
  {
-	"\0\s[0]This dialogue means we were minimized.\w8\0\s[0]Then brought back up.\e"
-}
+	"\0\s[0]I have been restored to my full size. \e"
+ }
 
 
 //--OnGhostChanging
@@ -479,11 +480,11 @@ OnGhostChanged
 	--
 	if reference0 == "K9" //As above, this should be the name of your ghost as in install.txt or descript.txt.
 	{
-		"\0\s[0]We have reloaded ourselves.\0\w8\s[0]Sure have.\e"
+		"\0\s[0]We have reloaded ourselves. Sure have.\e"
 	}
 	else //If you're switching to them from another ghost...
 	{
-		"\0\s[0]Goodbye, %(reference0).\w8\0\s[0]Someone switched from you to us.\e"
+		"\0\s[0]Goodbye, %(reference0). Someone switched from you to us.\e"
 
 		//Again, %(reference0) in this function is the name of the ghost in question. As above, replace these two lines of dialogue what what'd be appropriate for your ghost.
 	}
